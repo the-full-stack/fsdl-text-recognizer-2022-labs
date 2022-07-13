@@ -1,0 +1,57 @@
+# Data
+data/downloaded
+data/processed
+data/interim
+
+# Logs
+*/training/logs
+
+
+# Editors
+.vscode
+*.sw?
+*~
+
+# Node
+node_modules
+
+# Python
+__pycache__
+.pytest_cache
+.ipynb_checkpoints
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# logging
+wandb
+*.pt
+*.ckpt
+notebooks/lightning_logs
+lightning_logs/
+logs
+flagged
+
+# Misc
+.DS_Store
+_labs
+.mypy_cache
+lab9/requirements.txt
+.coverage
+/requirements.txt
+bootstrap.py
