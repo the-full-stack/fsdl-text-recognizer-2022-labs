@@ -1,6 +1,6 @@
 ---
 name: This repository is automatically generated! Don't open issues here.
-about: Open issues in the generating repo instead.
+about: Open issues in the generating repo instead: https://github.com/full-stack-deep-learning/fsdl-text-recognizer-2022
 title: ''
 labels: ''
 assignees: ''
