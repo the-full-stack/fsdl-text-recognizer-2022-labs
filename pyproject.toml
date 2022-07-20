@@ -1,0 +1,17 @@
+[tool.flake8]  # configured in .flake8
+[tool.darglint]  # configured in .flake8
+
+[tool.black]
+line-length = 120
+target-version = ["py37"]
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["training/logs"]
+
+[tool.pytest.ini_options]
+markers = [
+	"slow: marks a test as slow (deselect with '-m \"not slow\"']",
+	"data: marks a test as dependent on a data download (deselect with '-m \"not data\"')"
+]
+addopts = "--cov training --cov text_recognizer --cov-branch --doctest-modules --ignore training/logs -m 'not data'"
