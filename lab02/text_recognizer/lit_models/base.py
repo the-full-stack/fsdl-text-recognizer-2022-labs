@@ -6,7 +6,6 @@ import torch
 from torchmetrics import Accuracy
 
 
-
 OPTIMIZER = "Adam"
 LR = 1e-3
 LOSS = "cross_entropy"
@@ -103,4 +102,3 @@ class BaseLitModel(pl.LightningModule):
 
         self.log("test/loss", loss, on_step=False, on_epoch=True)
         self.log("test/acc", self.test_acc, on_step=False, on_epoch=True)
-

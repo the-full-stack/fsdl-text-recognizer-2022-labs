@@ -44,8 +44,6 @@ def temporary_working_directory(working_dir: Union[str, Path]):
         os.chdir(curdir)
 
 
-
-
 def compute_sha256(filename: Union[Path, str]):
     """Return SHA256 checksum of a file."""
     with open(filename, "rb") as f:

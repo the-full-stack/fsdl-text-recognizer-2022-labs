@@ -15,6 +15,3 @@ from .mnist import MNIST
 
 from .emnist import EMNIST
 from .emnist_lines import EMNISTLines
-
-
-
