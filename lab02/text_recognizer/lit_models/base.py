@@ -5,7 +5,6 @@ import pytorch_lightning as pl
 import torch
 from torchmetrics import Accuracy
 
-from .metrics import CharacterErrorRate
 
 
 OPTIMIZER = "Adam"
@@ -104,3 +103,4 @@ class BaseLitModel(pl.LightningModule):
 
         self.log("test/loss", loss, on_step=False, on_epoch=True)
         self.log("test/acc", self.test_acc, on_step=False, on_epoch=True)
+

@@ -3,9 +3,6 @@ data/downloaded
 data/processed
 data/interim
 
-# Logs
-*/training/logs
-
 
 # Editors
 .vscode
@@ -18,7 +15,11 @@ node_modules
 # Python
 __pycache__
 .pytest_cache
+
+# notebooks
 .ipynb_checkpoints
+*.nbconvert*.ipynb
+.notebook_test.sh
 
 # Distribution / packaging
 .Python
@@ -42,9 +43,9 @@ var/
 wandb
 *.pt
 *.ckpt
-notebooks/lightning_logs
 lightning_logs/
 logs
+*/training/logs
 flagged
 
 # Misc

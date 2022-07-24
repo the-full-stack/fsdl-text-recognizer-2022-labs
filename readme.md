@@ -22,6 +22,7 @@ We will set up monitoring that alerts us to potential issues in our model using 
 
 | Notebook    | Link                                                                                                                                                                              |
 |-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Lab 00: Overview | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/full-stack-deep-learning/fsdl-text-recognizer-2022-labs/blob/main/notebooks/lab00_overview.ipynb) |
-| Lab 01: Deep Neural Networks in PyTorch | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/full-stack-deep-learning/fsdl-text-recognizer-2022-labs/blob/main/lab01/notebooks/lab01_pytorch.ipynb) |
-| Lab 02a: PyTorch Lightning | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/full-stack-deep-learning/fsdl-text-recognizer-2022-labs/blob/main/lab02/notebooks/lab02a_lightning.ipynb) |
+| Lab 00: Overview | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab00-colab) |
+| Lab 01: Deep Neural Networks in PyTorch | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab01-colab) |
+| Lab 02a: PyTorch Lightning | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab02a-colab) |
+| Lab 02b: Training a CNN on Synthetic Handwriting Data | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab02b-colab) |

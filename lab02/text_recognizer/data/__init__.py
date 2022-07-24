@@ -18,4 +18,3 @@ from .emnist_lines import EMNISTLines
 
 
 
-

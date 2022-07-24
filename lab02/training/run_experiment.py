@@ -8,7 +8,6 @@ from pytorch_lightning.utilities.rank_zero import rank_zero_info, rank_zero_only
 import torch
 
 from text_recognizer import lit_models
-from text_recognizer.callbacks import logging
 from training.util import DATA_CLASS_MODULE, import_class, MODEL_CLASS_MODULE, setup_data_and_model_from_args
 
 
@@ -28,12 +27,6 @@ def _setup_parser():
     parser.set_defaults(max_epochs=1)
 
     # Basic arguments
-    parser.add_argument(
-        "--profile",
-        action="store_true",
-        default=False,
-        help="If passed, uses the PyTorch Profiler to track computation, exported as a Chrome-style trace.",
-    )
     parser.add_argument(
         "--data_class",
         type=str,
@@ -107,8 +100,8 @@ def main():
     args = parser.parse_args()
     data, model = setup_data_and_model_from_args(args)
 
-    if args.loss not in ("transformer",):
-        lit_model_class = lit_models.BaseLitModel
+    lit_model_class = lit_models.BaseLitModel
+
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)
@@ -121,9 +114,10 @@ def main():
     experiment_dir = logger.log_dir
 
     goldstar_metric = "validation/cer" if args.loss in ("transformer",) else "validation/loss"
+    filename_format = "epoch={epoch:04d}-validation.loss={validation/loss:.3f}"
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         save_top_k=5,
-        filename="epoch={epoch:04d}-validation.loss={validation/loss:.3f}-validation.cer={validation/cer:.3f}",
+        filename=filename_format,
         monitor=goldstar_metric,
         mode="min",
         auto_insert_metric_name=False,
@@ -133,29 +127,24 @@ def main():
 
     summary_callback = pl.callbacks.ModelSummary(max_depth=2)
 
-    callbacks = [summary_callback, checkpoint_callback, logging.ModelSizeLogger(), logging.LearningRateMonitor()]
+    callbacks = [summary_callback, checkpoint_callback]
     if args.stop_early:
         early_stopping_callback = pl.callbacks.EarlyStopping(
             monitor="validation/loss", mode="min", patience=args.stop_early
         )
         callbacks.append(early_stopping_callback)
 
-    if args.profile:
-        sched = torch.profiler.schedule(wait=0, warmup=3, active=4, repeat=0)
-        profiler = pl.profiler.PyTorchProfiler(export_to_chrome=True, schedule=sched, dirpath=experiment_dir)
-        profiler.STEP_FUNCTIONS = {"training_step"}  # only profile training
-    else:
-        profiler = pl.profiler.PassThroughProfiler()
-
-    trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, profiler=profiler)
+    trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger)
 
     trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)
 
-    trainer.profiler = pl.profiler.PassThroughProfiler()  # turn profiling off during testing
     trainer.test(lit_model, datamodule=data)
 
+    best_model_path = checkpoint_callback.best_model_path
+    if best_model_path:
+        rank_zero_info(f"Best model saved at: {best_model_path}")
 
 
 if __name__ == "__main__":

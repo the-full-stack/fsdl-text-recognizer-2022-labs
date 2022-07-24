@@ -38,3 +38,4 @@ per-file-ignores =
   */data/*.py:DAR
   text_recognizer/util.py:DAR101
   api_gradio/app.py:S104
+  training/run_experiment.py:I202
