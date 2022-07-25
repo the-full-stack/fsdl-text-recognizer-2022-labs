@@ -7,6 +7,9 @@ tqdm
 # versioned for stability
 gradio==3.0.21
 # versioned to match Google Colab up to minor
+Jinja2>=2.11,<2.12
 pillow<7.2
 torch>=1.12,<1.13
 torchvision>=0.13
+# versioned to avoid breaking change in minor version update
+markupsafe<2.1

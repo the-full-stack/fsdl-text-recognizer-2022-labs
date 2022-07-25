@@ -82,8 +82,10 @@ importlib-metadata==4.11.3
     # via
     #   -r requirements/prod.in
     #   click
-jinja2==3.1.1
-    # via gradio
+jinja2==2.11.3
+    # via
+    #   -r requirements/prod.in
+    #   gradio
 kiwisolver==1.4.2
     # via matplotlib
 linkify-it-py==1.0.3
@@ -92,8 +94,10 @@ markdown-it-py[linkify,plugins]==2.1.0
     # via
     #   gradio
     #   mdit-py-plugins
-markupsafe==2.1.1
-    # via jinja2
+markupsafe==2.0.1
+    # via
+    #   -r requirements/prod.in
+    #   jinja2
 matplotlib==3.5.2
     # via gradio
 mdit-py-plugins==0.3.0

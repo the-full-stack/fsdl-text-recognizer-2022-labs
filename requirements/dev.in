@@ -3,18 +3,18 @@ boltons
 coverage[toml]
 defusedxml
 itermplot
-jupyterlab
+ipywidgets
 matplotlib
+notebook
 nltk
 pre-commit
-# versioned to improve stability
-pytorch-lightning==1.6.3
 pytest
 pytest-cov
 scipy
 toml
-tornado
+# versioned to match Google Colab
+tornado>=5.1,<5.2
 # versioned to improve stability
+pytorch-lightning==1.6.3
 torchmetrics<0.8
-# versioned to improve stability
 wandb==0.12.17
