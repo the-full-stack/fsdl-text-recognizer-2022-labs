@@ -56,7 +56,7 @@ if "bootstrap" not in locals() or bootstrap.run:
     %autoreload 2
 
     bootstrap.run = False  # change to True re-run setup
-    
+
 !pwd
 %ls
 ```
