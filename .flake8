@@ -18,7 +18,7 @@ extend-ignore =
     D200,D205,D400,D401,  # whitespace issues and first line content
   # DAR - flake8-darglint docstring correctness check
     DAR103,  # mismatched or missing type in docstring
-application-import-names = text_recognizer,tests,training
+application-import-names = app_gradio,text_recognizer,tests,training
   # flake8-import-order: which names are first party?
 import-order-style = google
   # flake8-import-order: which import order style guide do we use?
@@ -37,5 +37,5 @@ per-file-ignores =
   */__init__.py:F401,I
   */data/*.py:DAR
   text_recognizer/util.py:DAR101
-  api_gradio/app.py:S104
   training/run_experiment.py:I202
+  app_gradio/app.py:I202

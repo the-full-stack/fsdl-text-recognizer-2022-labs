@@ -2,9 +2,10 @@ h5py
 importlib-metadata>=4.4
 numpy
 requests
-smart_open
+smart_open[s3]
 tqdm
 # versioned for stability
+gantry==0.4.5
 gradio==3.0.21
 # versioned to match Google Colab up to minor
 Jinja2>=2.11,<2.12
