@@ -32,6 +32,14 @@ train-mnist-cnn-ddp:
 lint:
 	tasks/lint.sh
 
-# Test all lab notebooks from the folder for provided lab index
+# Test notebooks in source repo
+test-notebooks:
+	tasks/notebook_test.sh $(SELECT_BY)
+
+# Test all lab notebooks from the folder for provided lab InDeX
 test-labs-up-to:
-	cd lab$(IDX); ./.notebook_test.sh
+	cd lab$(IDX) && ./.notebook_test.sh
+
+# Test only the notebooks for the provided lab InDeX
+test-lab:
+	cd lab$(IDX) && ./.notebook_test.sh $(IDX)
