@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Collection, Dict, Optional, Tuple, Union
 
 import pytorch_lightning as pl
+import torch
 from torch.utils.data import ConcatDataset, DataLoader
 
 from text_recognizer import util
@@ -38,7 +39,13 @@ def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
 
 
 BATCH_SIZE = 128
-DEFAULT_NUM_WORKERS = NUM_AVAIL_CPUS = len(os.sched_getaffinity(0))
+NUM_AVAIL_CPUS = len(os.sched_getaffinity(0))
+NUM_AVAIL_GPUS = torch.cuda.device_count()
+
+# sensible multiprocessing defaults: at most one worker per CPU
+DEFAULT_NUM_WORKERS = NUM_AVAIL_CPUS
+# but in distributed data parallel mode, we launch a training on each GPU, so must divide out to keep total at one worker per CPU
+DEFAULT_NUM_WORKERS = NUM_AVAIL_CPUS // NUM_AVAIL_GPUS if NUM_AVAIL_GPUS else DEFAULT_NUM_WORKERS
 
 
 class BaseDataModule(pl.LightningDataModule):
@@ -70,10 +77,16 @@ class BaseDataModule(pl.LightningDataModule):
     @staticmethod
     def add_to_argparse(parser):
         parser.add_argument(
-            "--batch_size", type=int, default=BATCH_SIZE, help="Number of examples to operate on per forward step."
+            "--batch_size",
+            type=int,
+            default=BATCH_SIZE,
+            help=f"Number of examples to operate on per forward step. Default is {BATCH_SIZE}.",
         )
         parser.add_argument(
-            "--num_workers", type=int, default=DEFAULT_NUM_WORKERS, help="Number of additional processes to load data."
+            "--num_workers",
+            type=int,
+            default=DEFAULT_NUM_WORKERS,
+            help=f"Number of additional processes to load data. Default is {DEFAULT_NUM_WORKERS}.",
         )
         return parser
 
