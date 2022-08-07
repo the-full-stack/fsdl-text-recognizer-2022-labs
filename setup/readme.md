@@ -84,6 +84,10 @@ For $10/month, you get priority access to faster GPUs (e.g. [P100 vs K80](https:
 
 Setting up a machine that you can sit in front of or SSH into is easy.
 
+### Watch a walkthrough video [here](https://fsdl.me/2022-local-setup-video).
+
+If you get stuck, it's better to at least [get started with the labs on Colab](https://fsdl.me/lab00-colab), where setup is just a single click, rather than getting frustrated and burning out on annoying environment management, networking, and systems administration issues that aren't as relevant to making ML-powered products.
+
 ### Summary
 
 - `environment.yml` specifies Python and optionally CUDA/CUDNN
@@ -117,7 +121,7 @@ Conda is an open-source package management system and environment management sys
 It is most closely associated with Python, but
 [in fact it can manage more than just Python environments](https://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/).
 
-To install `conda`, follow instructions at https://docs.conda.io/en/latest/miniconda.html.
+To install `conda`, follow instructions at https://conda.io/projects/conda/en/latest/user-guide/install/linux.html. We use Python 3.7.
 
 Note that you will likely need to close and re-open your terminal.
 Afterwards, you should have ability to run the `conda` command in your terminal.
@@ -152,4 +156,7 @@ Last, run `export PYTHONPATH=.` before executing any commands later on, or you w
 ModuleNotFoundError: No module named 'text_recognizer'
 ```
 
-In order to not have to set `PYTHONPATH` in every terminal you open, just add that line as the last line of the `~/.bashrc` file using a text editor of your choice (e.g. `nano ~/.bashrc`)
+In order to not have to set `PYTHONPATH` in every terminal you open, just add that line as the last line of the `~/.bashrc` file using a text editor of your choice (e.g. `nano ~/.bashrc`) or by concatenating with `>>`
+```bash
+export PYTHONPATH=.:$PYTHONPATH" >> ~/.bashrc
+```
