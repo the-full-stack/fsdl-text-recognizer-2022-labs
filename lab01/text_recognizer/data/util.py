@@ -3,7 +3,6 @@ from typing import Any, Callable, Dict, Sequence, Tuple, Union
 
 from PIL import Image
 import torch
-from torchvision import transforms
 
 
 SequenceOrTensor = Union[Sequence, torch.Tensor]
@@ -92,26 +91,6 @@ def split_dataset(base_dataset: BaseDataset, fraction: float, seed: int) -> Tupl
     return torch.utils.data.random_split(  # type: ignore
         base_dataset, [split_a_size, split_b_size], generator=torch.Generator().manual_seed(seed)
     )
-
-
-def get_transform(image_shape: Tuple[int, int], augment: bool) -> transforms.Compose:
-    """Get transformations for images."""
-    if augment:
-        transforms_list = [
-            transforms.RandomCrop(  # random pad image to image_shape with 0
-                size=image_shape, padding=None, pad_if_needed=True, fill=0, padding_mode="constant"
-            ),
-            transforms.ColorJitter(brightness=(0.8, 1.6)),
-            transforms.RandomAffine(
-                degrees=1,
-                shear=(-10, 10),
-                resample=Image.BILINEAR,
-            ),
-        ]
-    else:
-        transforms_list = [transforms.CenterCrop(image_shape)]  # pad image to image_shape with 0
-    transforms_list.append(transforms.ToTensor())
-    return transforms.Compose(transforms_list)
 
 
 def resize_image(image: Image.Image, scale_factor: int) -> Image.Image:
