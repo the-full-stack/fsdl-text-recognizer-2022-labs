@@ -18,18 +18,21 @@ We will manage our experiments using what we believe to be the best tool for the
 
 We will set up a quality assurance and continuous integration system for our codebase using [pre-commit](https://pre-commit.com/) and [GitHub Actions](https://docs.github.com/en/actions).
 
-We will package up the prediction system as a REST API and deploy it as a [Docker](https://docs.docker.com/) container on [AWS Lambda](https://aws.amazon.com/lambda/).
+We will package up the prediction system and deploy it as a [Docker](https://docs.docker.com/) container on [AWS Lambda](https://aws.amazon.com/lambda/).
 
 We will wrap that prediction system in a frontend written in Python using [Gradio](https://gradio.app/docs).
 
 We will set up monitoring that alerts us to potential issues in our model using [Gantry](https://gantry.io/).
 
-# Click the badges below to access individual lab notebooks on Colab
+## Click the badges below to access individual lab notebooks on Colab and videos on YouTube
 
-| Notebook    | Link                                                                                                                                                                              |
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Lab 00: Overview | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab00-colab) |
-| Lab 01: Deep Neural Networks in PyTorch | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab01-colab) |
-| Lab 02a: PyTorch Lightning | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab02a-colab) |
-| Lab 02b: Training a CNN on Synthetic Handwriting Data | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab02b-colab) |
-| Lab 03: Transformers and Paragraphs | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](http://fsdl.me/lab03-colab) |
+| Lab                                                       | Colab                                            | Video                                           |
+| :--                                                       | :---:                                            | :---:                                           |
+| **Lab Overview**               | [![open-in-colab]](https://fsdl.me/lab00-colab)  | [![yt-logo]](https://fsdl.me/2022-lab-overview-video) |
+| **Lab 01: Deep Neural Networks in PyTorch**               | [![open-in-colab]](https://fsdl.me/lab01-colab)  | [![yt-logo]](https://fsdl.me/2022-lab-01-video) |
+| **Lab 02a: PyTorch Lightning**                            | [![open-in-colab]](https://fsdl.me/lab02a-colab) | [![yt-logo]](https://fsdl.me/2022-lab-02-video) |
+| **Lab 02b: Training a CNN on Synthetic Handwriting Data** | [![open-in-colab]](https://fsdl.me/lab02b-colab) | [![yt-logo]](https://fsdl.me/2022-lab-02-video) |
+| **Lab 03: Transformers and Paragraphs**                   | [![open-in-colab]](https://fsdl.me/lab03-colab)  | [![yt-logo]](https://fsdl.me/2022-lab-03-video) |
+
+[yt-logo]: https://fsdl.me/yt-logo-badge
+[open-in-colab]: https://colab.research.google.com/assets/colab-badge.svg
