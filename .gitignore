@@ -46,8 +46,8 @@ wandb
 lightning_logs/
 logs
 */training/logs
+*/training/*sweep.yaml
 flagged
-training/*sweep.yaml
 
 # Misc
 .aws/credentials
