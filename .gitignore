@@ -47,6 +47,7 @@ lightning_logs/
 logs
 */training/logs
 flagged
+training/*sweep.yaml
 
 # Misc
 .aws/credentials

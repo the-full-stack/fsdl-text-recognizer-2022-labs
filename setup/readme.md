@@ -32,7 +32,7 @@ You should see a table showing your precious GPU :)
 
 Now, paste the following into a cell and run it:
 
-```
+```py
 # FSDL 2022 Setup
 lab_idx = None
 
@@ -158,5 +158,5 @@ ModuleNotFoundError: No module named 'text_recognizer'
 
 In order to not have to set `PYTHONPATH` in every terminal you open, just add that line as the last line of the `~/.bashrc` file using a text editor of your choice (e.g. `nano ~/.bashrc`) or by concatenating with `>>`
 ```bash
-export PYTHONPATH=.:$PYTHONPATH" >> ~/.bashrc
+echo "export PYTHONPATH=.:$PYTHONPATH" >> ~/.bashrc
 ```
