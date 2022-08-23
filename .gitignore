@@ -60,4 +60,4 @@ lab9/requirements.txt
 /requirements.txt
 requirements/dev-lint.txt
 bootstrap.py
-training/fixme.py
+**/fixme.py
