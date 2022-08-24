@@ -56,7 +56,8 @@ flagged
 _labs
 .mypy_cache
 lab9/requirements.txt
-.coverage
+.coverage*
 /requirements.txt
 requirements/dev-lint.txt
 bootstrap.py
+**/fixme.py
