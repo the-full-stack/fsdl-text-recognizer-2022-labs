@@ -14,4 +14,4 @@ markers = [
 	"slow: marks a test as slow (deselect with '-m \"not slow\"']",
 	"data: marks a test as dependent on a data download (deselect with '-m \"not data\"')"
 ]
-addopts = "--cov training --cov text_recognizer --cov-branch --doctest-modules --ignore training/logs -m 'not data' --ignore-glob **/bootstrap.py"
+addopts = "--cov training --cov text_recognizer --cov-branch --doctest-modules --ignore training/logs --ignore data/ -m 'not data' --ignore-glob **/bootstrap.py"
