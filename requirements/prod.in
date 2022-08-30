@@ -1,6 +1,7 @@
 h5py
 importlib-metadata>=4.4
 numpy
+pyngrok
 requests
 smart_open[s3]
 tqdm
