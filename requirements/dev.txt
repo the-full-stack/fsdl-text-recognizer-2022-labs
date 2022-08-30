@@ -283,7 +283,7 @@ pytest==7.1.1
     #   pytest-cov
 pytest-cov==3.0.0
     # via -r requirements/dev.in
-python-dateutil==2.8.2
+python-dateutil==2.8.1
     # via
     #   -c requirements/prod.txt
     #   jupyter-client
