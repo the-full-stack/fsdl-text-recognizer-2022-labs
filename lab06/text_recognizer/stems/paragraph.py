@@ -53,7 +53,11 @@ class ParagraphStem(ImageStem):
                 [
                     transforms.ColorJitter(**color_jitter_kwargs),
                     transforms.RandomCrop(
-                        size=IMAGE_SHAPE, padding=None, pad_if_needed=True, fill=0, padding_mode="constant"
+                        size=IMAGE_SHAPE,
+                        padding=None,
+                        pad_if_needed=True,
+                        fill=0,
+                        padding_mode="constant",
                     ),
                     transforms.RandomAffine(**random_affine_kwargs),
                     transforms.RandomPerspective(**random_perspective_kwargs),

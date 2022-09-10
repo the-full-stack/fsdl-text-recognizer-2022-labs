@@ -75,11 +75,15 @@ class IAMParagraphs(BaseDataModule):
     def setup(self, stage: str = None) -> None:
         def _load_dataset(split: str, transform: Callable) -> BaseDataset:
             crops, labels = load_processed_crops_and_labels(split)
-            Y = convert_strings_to_labels(strings=labels, mapping=self.inverse_mapping, length=self.output_dims[0])
+            Y = convert_strings_to_labels(
+                strings=labels, mapping=self.inverse_mapping, length=self.output_dims[0]
+            )
             return BaseDataset(crops, Y, transform=transform)
 
         rank_zero_info(f"IAMParagraphs.setup({stage}): Loading IAM paragraph regions and lines...")
-        validate_input_and_output_dimensions(input_dims=self.input_dims, output_dims=self.output_dims)
+        validate_input_and_output_dimensions(
+            input_dims=self.input_dims, output_dims=self.output_dims
+        )
 
         if stage == "fit" or stage is None:
             self.data_train = _load_dataset(split="train", transform=self.trainval_transform)
@@ -118,7 +122,11 @@ def validate_input_and_output_dimensions(
     properties = get_dataset_properties()
 
     max_image_shape = properties["crop_shape"]["max"] / IMAGE_SCALE_FACTOR
-    assert input_dims is not None and input_dims[1] >= max_image_shape[0] and input_dims[2] >= max_image_shape[1]
+    assert (
+        input_dims is not None
+        and input_dims[1] >= max_image_shape[0]
+        and input_dims[2] >= max_image_shape[1]
+    )
 
     # Add 2 because of start and end tokens
     assert output_dims is not None and output_dims[0] >= properties["label_length"]["max"] + 2
@@ -179,7 +187,10 @@ def get_dataset_properties() -> dict:
             "min": min(_get_property_values("label_length")),
             "max": max(_get_property_values("label_length")),
         },
-        "num_lines": {"min": min(_get_property_values("num_lines")), "max": max(_get_property_values("num_lines"))},
+        "num_lines": {
+            "min": min(_get_property_values("num_lines")),
+            "max": max(_get_property_values("num_lines")),
+        },
         "crop_shape": {"min": crop_shapes.min(axis=0), "max": crop_shapes.max(axis=0)},
         "aspect_ratio": {"min": aspect_ratios.min(), "max": aspect_ratios.max()},
     }

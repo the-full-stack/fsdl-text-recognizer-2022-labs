@@ -13,7 +13,9 @@ class PositionalEncodingImage(nn.Module):
     Following https://arxiv.org/abs/2103.06450 by Sumeet Singh.
     """
 
-    def __init__(self, d_model: int, max_h: int = 2000, max_w: int = 2000, persistent: bool = False) -> None:
+    def __init__(
+        self, d_model: int, max_h: int = 2000, max_w: int = 2000, persistent: bool = False
+    ) -> None:
         super().__init__()
         self.d_model = d_model
         assert d_model % 2 == 0, f"Embedding depth {d_model} is not even"
@@ -24,10 +26,14 @@ class PositionalEncodingImage(nn.Module):
 
     @staticmethod
     def make_pe(d_model: int, max_h: int, max_w: int) -> torch.Tensor:
-        pe_h = PositionalEncoding.make_pe(d_model=d_model // 2, max_len=max_h)  # (max_h, 1 d_model // 2)
+        pe_h = PositionalEncoding.make_pe(
+            d_model=d_model // 2, max_len=max_h
+        )  # (max_h, 1 d_model // 2)
         pe_h = pe_h.permute(2, 0, 1).expand(-1, -1, max_w)  # (d_model // 2, max_h, max_w)
 
-        pe_w = PositionalEncoding.make_pe(d_model=d_model // 2, max_len=max_w)  # (max_w, 1, d_model // 2)
+        pe_w = PositionalEncoding.make_pe(
+            d_model=d_model // 2, max_len=max_w
+        )  # (max_w, 1, d_model // 2)
         pe_w = pe_w.permute(2, 1, 0).expand(-1, max_h, -1)  # (d_model // 2, max_h, max_w)
 
         pe = torch.cat([pe_h, pe_w], dim=0)  # (d_model, max_h, max_w)
@@ -44,7 +50,9 @@ class PositionalEncodingImage(nn.Module):
 class PositionalEncoding(torch.nn.Module):
     """Classic Attention-is-all-you-need positional encoding."""
 
-    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000, persistent: bool = False) -> None:
+    def __init__(
+        self, d_model: int, dropout: float = 0.1, max_len: int = 5000, persistent: bool = False
+    ) -> None:
         super().__init__()
         self.dropout = torch.nn.Dropout(p=dropout)
         pe = self.make_pe(d_model=d_model, max_len=max_len)  # (max_len, 1, d_model)

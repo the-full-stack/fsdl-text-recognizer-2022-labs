@@ -69,21 +69,31 @@ class IAMLines(BaseDataModule):
 
         if stage == "fit" or stage is None:
             x_train, labels_train = load_processed_crops_and_labels("train", PROCESSED_DATA_DIRNAME)
-            y_train = convert_strings_to_labels(labels_train, self.inverse_mapping, length=self.output_dims[0])
+            y_train = convert_strings_to_labels(
+                labels_train, self.inverse_mapping, length=self.output_dims[0]
+            )
             self.data_train = BaseDataset(x_train, y_train, transform=self.trainval_transform)
 
             x_val, labels_val = load_processed_crops_and_labels("val", PROCESSED_DATA_DIRNAME)
-            y_val = convert_strings_to_labels(labels_val, self.inverse_mapping, length=self.output_dims[0])
+            y_val = convert_strings_to_labels(
+                labels_val, self.inverse_mapping, length=self.output_dims[0]
+            )
             self.data_val = BaseDataset(x_val, y_val, transform=self.trainval_transform)
 
             # quick check: do we have the right sequence lengths?
-            assert self.output_dims[0] >= max([len(_) for _ in labels_train]) + 2  # Add 2 for start/end tokens.
-            assert self.output_dims[0] >= max([len(_) for _ in labels_val]) + 2  # Add 2 for start/end tokens.
+            assert (
+                self.output_dims[0] >= max([len(_) for _ in labels_train]) + 2
+            )  # Add 2 for start/end tokens.
+            assert (
+                self.output_dims[0] >= max([len(_) for _ in labels_val]) + 2
+            )  # Add 2 for start/end tokens.
 
         if stage == "test" or stage is None:
             x_test, labels_test = load_processed_crops_and_labels("test", PROCESSED_DATA_DIRNAME)
 
-            y_test = convert_strings_to_labels(labels_test, self.inverse_mapping, length=self.output_dims[0])
+            y_test = convert_strings_to_labels(
+                labels_test, self.inverse_mapping, length=self.output_dims[0]
+            )
             self.data_test = BaseDataset(x_test, y_test, transform=self.transform)
 
             assert self.output_dims[0] >= max([len(_) for _ in labels_test]) + 2
@@ -128,7 +138,9 @@ def generate_line_crops_and_labels(iam: IAM, split: str, scale_factor=IMAGE_SCAL
     return crops, labels
 
 
-def save_images_and_labels(crops: Sequence[Image.Image], labels: Sequence[str], split: str, data_dirname: Path):
+def save_images_and_labels(
+    crops: Sequence[Image.Image], labels: Sequence[str], split: str, data_dirname: Path
+):
     (data_dirname / split).mkdir(parents=True, exist_ok=True)
 
     with open(data_dirname / split / "_labels.json", "w") as f:
@@ -147,7 +159,9 @@ def load_processed_crops_and_labels(split: str, data_dirname: Path):
 
 def load_processed_line_crops(split: str, data_dirname: Path):
     """Load line crops for given split from processed directory."""
-    crop_filenames = sorted((data_dirname / split).glob("*.png"), key=lambda filename: int(Path(filename).stem))
+    crop_filenames = sorted(
+        (data_dirname / split).glob("*.png"), key=lambda filename: int(Path(filename).stem)
+    )
     crops = [util.read_image_pil(filename, grayscale=True) for filename in crop_filenames]
     return crops
 

@@ -51,12 +51,16 @@ class IAMSyntheticParagraphs(IAMParagraphs):
         iam.prepare_data()
 
         for split in ["train"]:  # synthetic dataset is only used in training phase
-            rank_zero_info(f"Cropping IAM line regions and loading labels for {split} data split...")
+            rank_zero_info(
+                f"Cropping IAM line regions and loading labels for {split} data split..."
+            )
             crops, labels = generate_line_crops_and_labels(iam, split)
             save_images_and_labels(crops, labels, split, PROCESSED_DATA_DIRNAME)
 
     def setup(self, stage: str = None) -> None:
-        rank_zero_info(f"IAMSyntheticParagraphs.setup({stage}): Loading train IAM paragraph regions and lines...")
+        rank_zero_info(
+            f"IAMSyntheticParagraphs.setup({stage}): Loading train IAM paragraph regions and lines..."
+        )
 
         if stage == "fit" or stage is None:
             self._load_processed_crops_and_labels()
@@ -161,7 +165,9 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
             datum = self.transform(datum)
 
         length = self.output_dims[0]
-        target = convert_strings_to_labels(strings=[labels], mapping=self.inverse_mapping, length=length)[0]
+        target = convert_strings_to_labels(
+            strings=[labels], mapping=self.inverse_mapping, length=length
+        )[0]
 
         return datum, target
 

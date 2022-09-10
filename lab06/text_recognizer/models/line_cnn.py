@@ -32,7 +32,9 @@ class ConvBlock(nn.Module):
         padding: Param2D = 1,
     ) -> None:
         super().__init__()
-        self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=kernel_size, stride=stride, padding=padding)
+        self.conv = nn.Conv2d(
+            input_channels, output_channels, kernel_size=kernel_size, stride=stride, padding=padding
+        )
         self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -88,7 +90,11 @@ class LineCNN(nn.Module):
             ConvBlock(conv_dim * 2, conv_dim * 4, stride=2),
             ConvBlock(conv_dim * 4, conv_dim * 4),
             ConvBlock(
-                conv_dim * 4, fc_dim, kernel_size=(H // 8, self.WW // 8), stride=(H // 8, self.WS // 8), padding=0
+                conv_dim * 4,
+                fc_dim,
+                kernel_size=(H // 8, self.WW // 8),
+                stride=(H // 8, self.WS // 8),
+                padding=0,
             ),
         )
         self.fc1 = nn.Linear(fc_dim, fc_dim)

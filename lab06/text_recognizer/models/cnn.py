@@ -86,7 +86,9 @@ class CNN(nn.Module):
             (B, Cl) tensor
         """
         _B, _Ch, H, W = x.shape
-        assert H == self.input_height and W == self.input_width, f"bad inputs to CNN with shape {x.shape}"
+        assert (
+            H == self.input_height and W == self.input_width
+        ), f"bad inputs to CNN with shape {x.shape}"
         x = self.conv1(x)  # _B, CONV_DIM, H, W
         x = self.conv2(x)  # _B, CONV_DIM, H, W
         x = self.max_pool(x)  # _B, CONV_DIM, H // 2, W // 2

@@ -10,7 +10,11 @@ import h5py
 import numpy as np
 import toml
 
-from text_recognizer.data.base_data_module import _download_raw_dataset, BaseDataModule, load_and_print_info
+from text_recognizer.data.base_data_module import (
+    _download_raw_dataset,
+    BaseDataModule,
+    load_and_print_info,
+)
 from text_recognizer.data.util import BaseDataset, split_dataset
 import text_recognizer.metadata.emnist as metadata
 from text_recognizer.stems.image import ImageStem
@@ -60,7 +64,9 @@ class EMNIST(BaseDataModule):
                 self.y_trainval = f["y_train"][:].squeeze().astype(int)
 
             data_trainval = BaseDataset(self.x_trainval, self.y_trainval, transform=self.transform)
-            self.data_train, self.data_val = split_dataset(base_dataset=data_trainval, fraction=TRAIN_FRAC, seed=42)
+            self.data_train, self.data_val = split_dataset(
+                base_dataset=data_trainval, fraction=TRAIN_FRAC, seed=42
+            )
 
         if stage == "test" or stage is None:
             with h5py.File(PROCESSED_DATA_FILENAME, "r") as f:

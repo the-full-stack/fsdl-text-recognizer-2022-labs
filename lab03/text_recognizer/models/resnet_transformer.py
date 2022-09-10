@@ -7,7 +7,11 @@ import torch
 from torch import nn
 import torchvision
 
-from .transformer_util import generate_square_subsequent_mask, PositionalEncoding, PositionalEncodingImage
+from .transformer_util import (
+    generate_square_subsequent_mask,
+    PositionalEncoding,
+    PositionalEncodingImage,
+)
 
 
 TF_DIM = 256
@@ -47,7 +51,9 @@ class ResnetTransformer(nn.Module):
 
         # ## Encoder part - should output  vector sequence of length self.dim per sample
         resnet = torchvision.models.resnet18(weights=None)
-        self.resnet = torch.nn.Sequential(*(list(resnet.children())[:-2]))  # Exclude AvgPool and Linear layers
+        self.resnet = torch.nn.Sequential(
+            *(list(resnet.children())[:-2])
+        )  # Exclude AvgPool and Linear layers
         # Resnet will output (B, RESNET_DIM, _H, _W) logits where _H = input_H // 32, _W = input_W // 32
 
         self.encoder_projection = nn.Conv2d(RESNET_DIM, self.dim, kernel_size=1)
@@ -66,7 +72,9 @@ class ResnetTransformer(nn.Module):
         self.y_mask = generate_square_subsequent_mask(self.max_output_length)
 
         self.transformer_decoder = nn.TransformerDecoder(
-            nn.TransformerDecoderLayer(d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout),
+            nn.TransformerDecoderLayer(
+                d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout
+            ),
             num_layers=tf_layers,
         )
 
@@ -98,12 +106,17 @@ class ResnetTransformer(nn.Module):
             output_tokens[:, Sy] = output[-1]  # Set the last output token
 
             # Early stopping of prediction loop to speed up prediction
-            if ((output_tokens[:, Sy] == self.end_token) | (output_tokens[:, Sy] == self.padding_token)).all():
+            if (
+                (output_tokens[:, Sy] == self.end_token)
+                | (output_tokens[:, Sy] == self.padding_token)
+            ).all():
                 break
 
         # Set all tokens after end or padding token to be padding
         for Sy in range(1, S):
-            ind = (output_tokens[:, Sy - 1] == self.end_token) | (output_tokens[:, Sy - 1] == self.padding_token)
+            ind = (output_tokens[:, Sy - 1] == self.end_token) | (
+                output_tokens[:, Sy - 1] == self.padding_token
+            )
             output_tokens[ind, Sy] = self.padding_token
 
         return output_tokens  # (B, Sy)
@@ -114,9 +127,13 @@ class ResnetTransformer(nn.Module):
         self.fc.bias.data.zero_()
         self.fc.weight.data.uniform_(-initrange, initrange)
 
-        nn.init.kaiming_normal_(self.encoder_projection.weight.data, a=0, mode="fan_out", nonlinearity="relu")
+        nn.init.kaiming_normal_(
+            self.encoder_projection.weight.data, a=0, mode="fan_out", nonlinearity="relu"
+        )
         if self.encoder_projection.bias is not None:
-            _fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.encoder_projection.weight.data)
+            _fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(
+                self.encoder_projection.weight.data
+            )
             bound = 1 / math.sqrt(fan_out)
             nn.init.normal_(self.encoder_projection.bias, -bound, bound)
 
@@ -135,8 +152,12 @@ class ResnetTransformer(nn.Module):
         _B, C, _H, _W = x.shape
         if C == 1:
             x = x.repeat(1, 3, 1, 1)
-        x = self.resnet(x)  # (B, RESNET_DIM, _H // 32, _W // 32),   (B, 512, 18, 20) in the case of IAMParagraphs
-        x = self.encoder_projection(x)  # (B, E, _H // 32, _W // 32),   (B, 256, 18, 20) in the case of IAMParagraphs
+        x = self.resnet(
+            x
+        )  # (B, RESNET_DIM, _H // 32, _W // 32),   (B, 512, 18, 20) in the case of IAMParagraphs
+        x = self.encoder_projection(
+            x
+        )  # (B, E, _H // 32, _W // 32),   (B, 256, 18, 20) in the case of IAMParagraphs
 
         # x = x * math.sqrt(self.dim)  # (B, E, _H // 32, _W // 32)  # This prevented any learning
         x = self.enc_pos_encoder(x)  # (B, E, Ho, Wo);     Ho = _H // 32, Wo = _W // 32

@@ -56,7 +56,9 @@ class LineCNNTransformer(nn.Module):
         self.y_mask = generate_square_subsequent_mask(self.max_output_length)
 
         self.transformer_decoder = nn.TransformerDecoder(
-            nn.TransformerDecoderLayer(d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout),
+            nn.TransformerDecoderLayer(
+                d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout
+            ),
             num_layers=tf_layers,
         )
 
@@ -141,7 +143,9 @@ class LineCNNTransformer(nn.Module):
 
         # Set all tokens after end token to be padding
         for Sy in range(1, S):
-            ind = (output_tokens[:, Sy - 1] == self.end_token) | (output_tokens[:, Sy - 1] == self.padding_token)
+            ind = (output_tokens[:, Sy - 1] == self.end_token) | (
+                output_tokens[:, Sy - 1] == self.padding_token
+            )
             output_tokens[ind, Sy] = self.padding_token
 
         return output_tokens  # (B, Sy)

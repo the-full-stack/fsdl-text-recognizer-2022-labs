@@ -8,7 +8,12 @@ from pytorch_lightning.utilities.rank_zero import rank_zero_info, rank_zero_only
 import torch
 
 from text_recognizer import lit_models
-from training.util import DATA_CLASS_MODULE, import_class, MODEL_CLASS_MODULE, setup_data_and_model_from_args
+from training.util import (
+    DATA_CLASS_MODULE,
+    import_class,
+    MODEL_CLASS_MODULE,
+    setup_data_and_model_from_args,
+)
 
 
 # In order to ensure reproducible experiments, we must set random seeds.
@@ -40,7 +45,10 @@ def _setup_parser():
         help=f"String identifier for the model class, relative to {MODEL_CLASS_MODULE}.",
     )
     parser.add_argument(
-        "--load_checkpoint", type=str, default=None, help="If passed, loads a model from the provided path."
+        "--load_checkpoint",
+        type=str,
+        default=None,
+        help="If passed, loads a model from the provided path.",
     )
     parser.add_argument(
         "--stop_early",
@@ -106,7 +114,9 @@ def main():
         lit_model_class = lit_models.TransformerLitModel
 
     if args.load_checkpoint is not None:
-        lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)
+        lit_model = lit_model_class.load_from_checkpoint(
+            args.load_checkpoint, args=args, model=model
+        )
     else:
         lit_model = lit_model_class(args=args, model=model)
 
@@ -140,7 +150,9 @@ def main():
 
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger)
 
-    trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
+    trainer.tune(
+        lit_model, datamodule=data
+    )  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)
 

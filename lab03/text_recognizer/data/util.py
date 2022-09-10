@@ -67,7 +67,9 @@ class BaseDataset(torch.utils.data.Dataset):
         return datum, target
 
 
-def convert_strings_to_labels(strings: Sequence[str], mapping: Dict[str, int], length: int) -> torch.Tensor:
+def convert_strings_to_labels(
+    strings: Sequence[str], mapping: Dict[str, int], length: int
+) -> torch.Tensor:
     """
     Convert sequence of N strings to a (N, length) ndarray, with each string wrapped with <S> and <E> tokens,
     and padded with the <P> token.
@@ -81,7 +83,9 @@ def convert_strings_to_labels(strings: Sequence[str], mapping: Dict[str, int], l
     return labels
 
 
-def split_dataset(base_dataset: BaseDataset, fraction: float, seed: int) -> Tuple[BaseDataset, BaseDataset]:
+def split_dataset(
+    base_dataset: BaseDataset, fraction: float, seed: int
+) -> Tuple[BaseDataset, BaseDataset]:
     """
     Split input base_dataset into 2 base datasets, the first of size fraction * size of the base_dataset and the
     other of size (1 - fraction) * size of the base_dataset.
@@ -97,4 +101,6 @@ def resize_image(image: Image.Image, scale_factor: int) -> Image.Image:
     """Resize image by scale factor."""
     if scale_factor == 1:
         return image
-    return image.resize((image.width // scale_factor, image.height // scale_factor), resample=Image.BILINEAR)
+    return image.resize(
+        (image.width // scale_factor, image.height // scale_factor), resample=Image.BILINEAR
+    )
