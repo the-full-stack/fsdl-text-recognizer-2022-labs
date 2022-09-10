@@ -8,8 +8,9 @@ from typing import Sequence
 
 import h5py
 import numpy as np
-import text_recognizer.metadata.emnist as metadata
 import toml
+
+import text_recognizer.metadata.emnist as metadata
 from text_recognizer.data.base_data_module import (
     BaseDataModule,
     _download_raw_dataset,

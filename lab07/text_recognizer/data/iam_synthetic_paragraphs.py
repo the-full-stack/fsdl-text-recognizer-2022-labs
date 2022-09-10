@@ -4,10 +4,11 @@ import random
 from typing import Any, Callable, List, Sequence, Tuple
 
 import numpy as np
-import text_recognizer.metadata.iam_synthetic_paragraphs as metadata
 import torch
 from PIL import Image
 from pytorch_lightning.utilities.rank_zero import rank_zero_info
+
+import text_recognizer.metadata.iam_synthetic_paragraphs as metadata
 from text_recognizer.data.base_data_module import load_and_print_info
 from text_recognizer.data.iam import IAM
 from text_recognizer.data.iam_lines import (

@@ -5,9 +5,10 @@ from pathlib import Path
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
 import numpy as np
-import text_recognizer.metadata.iam_paragraphs as metadata
 from PIL import Image
 from pytorch_lightning.utilities.rank_zero import rank_zero_info
+
+import text_recognizer.metadata.iam_paragraphs as metadata
 from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_recognizer.data.iam import IAM
 from text_recognizer.data.util import BaseDataset, convert_strings_to_labels, resize_image

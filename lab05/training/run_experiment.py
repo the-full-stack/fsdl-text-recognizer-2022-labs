@@ -6,6 +6,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from pytorch_lightning.utilities.rank_zero import rank_zero_info, rank_zero_only
+
 from text_recognizer import callbacks as cb
 from text_recognizer import lit_models
 from training.util import (

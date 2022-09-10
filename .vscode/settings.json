@@ -21,9 +21,6 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [],
 
-    // python - isort
-    "python.sortImports.args": ["--recursive"],
-
     // Python files only
     "[python]": {
         // isort on save

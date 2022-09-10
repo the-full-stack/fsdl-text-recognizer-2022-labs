@@ -8,9 +8,10 @@ from typing import Callable
 
 import gradio as gr
 import requests
-import text_recognizer.util as util
 from PIL import ImageStat
 from PIL.Image import Image
+
+import text_recognizer.util as util
 from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # do not use GPU

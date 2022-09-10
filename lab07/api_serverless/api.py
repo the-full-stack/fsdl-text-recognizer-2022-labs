@@ -1,8 +1,9 @@
 """AWS Lambda function serving text_recognizer predictions."""
 import json
 
-import text_recognizer.util as util
 from PIL import ImageStat
+
+import text_recognizer.util as util
 from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
 
 model = ParagraphTextRecognizer()

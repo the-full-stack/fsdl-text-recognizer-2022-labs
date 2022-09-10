@@ -2,6 +2,7 @@ import json
 import os
 
 import requests
+
 from app_gradio import app
 from text_recognizer import util
 

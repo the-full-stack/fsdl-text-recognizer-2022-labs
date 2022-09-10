@@ -101,7 +101,7 @@ target-version = ["py310"]
 profile = "black"
 line_length = 100
 default_section = "THIRDPARTY"
-known_first_party = ["fsdl"]
+known_first_party = ["app_gradio", "text_recognizer", "tests", "training"]
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 # add_imports = "from __future__ import annotations"
 

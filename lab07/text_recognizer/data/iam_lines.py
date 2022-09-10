@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import Sequence
 
 import numpy as np
-import text_recognizer.metadata.iam_lines as metadata
 from PIL import Image, ImageFile
+
+import text_recognizer.metadata.iam_lines as metadata
 from text_recognizer import util
 from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_recognizer.data.iam import IAM

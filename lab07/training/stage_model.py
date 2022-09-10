@@ -14,6 +14,7 @@ from pathlib import Path
 
 import torch
 import wandb
+
 from text_recognizer.lit_models import TransformerLitModel
 from training.util import setup_data_and_model_from_args
 
