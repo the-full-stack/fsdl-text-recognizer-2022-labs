@@ -118,9 +118,7 @@ repos:
               \.secrets\.baseline|
               \.env\.template
           )$
-  # - repo: https://github.com/python-poetry/poetry
-  #   rev: 1.2.0b3
-  - repo: https://github.com/john-sandall/mirrors-poetry
+  - repo: https://github.com/python-poetry/poetry
     rev: 1.2.0
     hooks:
       - id: poetry-check

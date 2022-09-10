@@ -1,6 +1,8 @@
 {
     // editor & autoformatter settings
+    "editor.bracketPairColorization.enabled": true,
     "editor.formatOnSave": true,
+    "editor.guides.bracketPairs":"active",
     "editor.trimAutoWhitespace": true,
     "files.trimTrailingWhitespace": true,
     "prettier.enable": true,
@@ -14,10 +16,11 @@
 
     // python - linting & static analysis
     "python.analysis.extraPaths": ["fsdl"],
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "off",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [],
+    "python.linting.mypyEnabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [],
 
