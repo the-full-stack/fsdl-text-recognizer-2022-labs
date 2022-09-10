@@ -65,7 +65,9 @@ class EMNIST(BaseDataModule):
 
             data_trainval = BaseDataset(self.x_trainval, self.y_trainval, transform=self.transform)
             self.data_train, self.data_val = split_dataset(
-                base_dataset=data_trainval, fraction=TRAIN_FRAC, seed=42
+                base_dataset=data_trainval,
+                fraction=TRAIN_FRAC,
+                seed=42,
             )
 
         if stage == "test" or stage is None:

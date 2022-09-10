@@ -47,7 +47,7 @@ class IAMParagraphs(BaseDataModule):
         if (PROCESSED_DATA_DIRNAME / "_properties.json").exists():
             return
         rank_zero_info(
-            "IAMParagraphs.prepare_data: Cropping IAM paragraph regions and saving them along with labels..."
+            "IAMParagraphs.prepare_data: Cropping IAM paragraph regions and saving them along with labels...",
         )
 
         iam = IAM()
@@ -66,7 +66,7 @@ class IAMParagraphs(BaseDataModule):
                         "num_lines": _num_lines(label),
                     }
                     for id_, label in labels.items()
-                }
+                },
             )
 
         with open(PROCESSED_DATA_DIRNAME / "_properties.json", "w") as f:
@@ -76,13 +76,16 @@ class IAMParagraphs(BaseDataModule):
         def _load_dataset(split: str, transform: Callable) -> BaseDataset:
             crops, labels = load_processed_crops_and_labels(split)
             Y = convert_strings_to_labels(
-                strings=labels, mapping=self.inverse_mapping, length=self.output_dims[0]
+                strings=labels,
+                mapping=self.inverse_mapping,
+                length=self.output_dims[0],
             )
             return BaseDataset(crops, Y, transform=transform)
 
         rank_zero_info(f"IAMParagraphs.setup({stage}): Loading IAM paragraph regions and lines...")
         validate_input_and_output_dimensions(
-            input_dims=self.input_dims, output_dims=self.output_dims
+            input_dims=self.input_dims,
+            output_dims=self.output_dims,
         )
 
         if stage == "fit" or stage is None:
@@ -116,7 +119,8 @@ class IAMParagraphs(BaseDataModule):
 
 
 def validate_input_and_output_dimensions(
-    input_dims: Optional[Tuple[int, ...]], output_dims: Optional[Tuple[int, ...]]
+    input_dims: Optional[Tuple[int, ...]],
+    output_dims: Optional[Tuple[int, ...]],
 ) -> None:
     """Validate input and output dimensions against the properties of the dataset."""
     properties = get_dataset_properties()
@@ -133,7 +137,9 @@ def validate_input_and_output_dimensions(
 
 
 def get_paragraph_crops_and_labels(
-    iam: IAM, split: str, scale_factor=IMAGE_SCALE_FACTOR
+    iam: IAM,
+    split: str,
+    scale_factor=IMAGE_SCALE_FACTOR,
 ) -> Tuple[Dict[str, Image.Image], Dict[str, str]]:
     """Create IAM paragraph crops and labels for a given split, with resizing."""
     crops = {}

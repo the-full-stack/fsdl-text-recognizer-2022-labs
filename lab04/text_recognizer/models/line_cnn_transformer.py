@@ -57,7 +57,10 @@ class LineCNNTransformer(nn.Module):
 
         self.transformer_decoder = nn.TransformerDecoder(
             nn.TransformerDecoderLayer(
-                d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout
+                d_model=self.dim,
+                nhead=tf_nhead,
+                dim_feedforward=tf_fc_dim,
+                dropout=tf_dropout,
             ),
             num_layers=tf_layers,
         )
@@ -111,7 +114,10 @@ class LineCNNTransformer(nn.Module):
         Sy = y.shape[0]
         y_mask = self.y_mask[:Sy, :Sy].type_as(x)
         output = self.transformer_decoder(
-            tgt=y, memory=x, tgt_mask=y_mask, tgt_key_padding_mask=y_padding_mask
+            tgt=y,
+            memory=x,
+            tgt_mask=y_mask,
+            tgt_key_padding_mask=y_padding_mask,
         )  # (Sy, B, E)
         output = self.fc(output)  # (Sy, B, C)
         return output

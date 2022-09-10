@@ -112,7 +112,9 @@ def main():
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(
-            args.load_checkpoint, args=args, model=model
+            args.load_checkpoint,
+            args=args,
+            model=model,
         )
     else:
         lit_model = lit_model_class(args=args, model=model)
@@ -139,14 +141,17 @@ def main():
     callbacks = [summary_callback, checkpoint_callback]
     if args.stop_early:
         early_stopping_callback = pl.callbacks.EarlyStopping(
-            monitor="validation/loss", mode="min", patience=args.stop_early
+            monitor="validation/loss",
+            mode="min",
+            patience=args.stop_early,
         )
         callbacks.append(early_stopping_callback)
 
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger)
 
     trainer.tune(
-        lit_model, datamodule=data
+        lit_model,
+        datamodule=data,
     )  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)

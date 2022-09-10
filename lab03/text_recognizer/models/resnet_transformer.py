@@ -52,7 +52,7 @@ class ResnetTransformer(nn.Module):
         # ## Encoder part - should output  vector sequence of length self.dim per sample
         resnet = torchvision.models.resnet18(weights=None)
         self.resnet = torch.nn.Sequential(
-            *(list(resnet.children())[:-2])
+            *(list(resnet.children())[:-2]),
         )  # Exclude AvgPool and Linear layers
         # Resnet will output (B, RESNET_DIM, _H, _W) logits where _H = input_H // 32, _W = input_W // 32
 
@@ -60,7 +60,9 @@ class ResnetTransformer(nn.Module):
         # encoder_projection will output (B, dim, _H, _W) logits
 
         self.enc_pos_encoder = PositionalEncodingImage(
-            d_model=self.dim, max_h=self.input_dims[1], max_w=self.input_dims[2]
+            d_model=self.dim,
+            max_h=self.input_dims[1],
+            max_w=self.input_dims[2],
         )  # Max (Ho, Wo)
 
         # ## Decoder part
@@ -73,7 +75,10 @@ class ResnetTransformer(nn.Module):
 
         self.transformer_decoder = nn.TransformerDecoder(
             nn.TransformerDecoderLayer(
-                d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout
+                d_model=self.dim,
+                nhead=tf_nhead,
+                dim_feedforward=tf_fc_dim,
+                dropout=tf_dropout,
             ),
             num_layers=tf_layers,
         )
@@ -128,11 +133,14 @@ class ResnetTransformer(nn.Module):
         self.fc.weight.data.uniform_(-initrange, initrange)
 
         nn.init.kaiming_normal_(
-            self.encoder_projection.weight.data, a=0, mode="fan_out", nonlinearity="relu"
+            self.encoder_projection.weight.data,
+            a=0,
+            mode="fan_out",
+            nonlinearity="relu",
         )
         if self.encoder_projection.bias is not None:
             _fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(
-                self.encoder_projection.weight.data
+                self.encoder_projection.weight.data,
             )
             bound = 1 / math.sqrt(fan_out)
             nn.init.normal_(self.encoder_projection.bias, -bound, bound)
@@ -153,10 +161,10 @@ class ResnetTransformer(nn.Module):
         if C == 1:
             x = x.repeat(1, 3, 1, 1)
         x = self.resnet(
-            x
+            x,
         )  # (B, RESNET_DIM, _H // 32, _W // 32),   (B, 512, 18, 20) in the case of IAMParagraphs
         x = self.encoder_projection(
-            x
+            x,
         )  # (B, E, _H // 32, _W // 32),   (B, 256, 18, 20) in the case of IAMParagraphs
 
         # x = x * math.sqrt(self.dim)  # (B, E, _H // 32, _W // 32)  # This prevented any learning
@@ -191,7 +199,10 @@ class ResnetTransformer(nn.Module):
         Sy = y.shape[0]
         y_mask = self.y_mask[:Sy, :Sy].type_as(x)
         output = self.transformer_decoder(
-            tgt=y, memory=x, tgt_mask=y_mask, tgt_key_padding_mask=y_padding_mask
+            tgt=y,
+            memory=x,
+            tgt_mask=y_mask,
+            tgt_key_padding_mask=y_padding_mask,
         )  # (Sy, B, E)
         output = self.fc(output)  # (Sy, B, C)
         return output

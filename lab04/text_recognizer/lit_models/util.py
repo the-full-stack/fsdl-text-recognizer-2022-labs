@@ -45,7 +45,9 @@ def first_appearance(x: torch.Tensor, element: Union[int, float], dim: int = 1) 
 
 
 def replace_after(
-    x: torch.Tensor, element: Union[int, float], replace: Union[int, float]
+    x: torch.Tensor,
+    element: Union[int, float],
+    replace: Union[int, float],
 ) -> torch.Tensor:
     """Replace all values in each row of 2d Tensor x after the first appearance of element with replace.
 

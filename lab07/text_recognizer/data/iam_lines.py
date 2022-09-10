@@ -70,13 +70,17 @@ class IAMLines(BaseDataModule):
         if stage == "fit" or stage is None:
             x_train, labels_train = load_processed_crops_and_labels("train", PROCESSED_DATA_DIRNAME)
             y_train = convert_strings_to_labels(
-                labels_train, self.inverse_mapping, length=self.output_dims[0]
+                labels_train,
+                self.inverse_mapping,
+                length=self.output_dims[0],
             )
             self.data_train = BaseDataset(x_train, y_train, transform=self.trainval_transform)
 
             x_val, labels_val = load_processed_crops_and_labels("val", PROCESSED_DATA_DIRNAME)
             y_val = convert_strings_to_labels(
-                labels_val, self.inverse_mapping, length=self.output_dims[0]
+                labels_val,
+                self.inverse_mapping,
+                length=self.output_dims[0],
             )
             self.data_val = BaseDataset(x_val, y_val, transform=self.trainval_transform)
 
@@ -92,7 +96,9 @@ class IAMLines(BaseDataModule):
             x_test, labels_test = load_processed_crops_and_labels("test", PROCESSED_DATA_DIRNAME)
 
             y_test = convert_strings_to_labels(
-                labels_test, self.inverse_mapping, length=self.output_dims[0]
+                labels_test,
+                self.inverse_mapping,
+                length=self.output_dims[0],
             )
             self.data_test = BaseDataset(x_test, y_test, transform=self.transform)
 
@@ -139,7 +145,10 @@ def generate_line_crops_and_labels(iam: IAM, split: str, scale_factor=IMAGE_SCAL
 
 
 def save_images_and_labels(
-    crops: Sequence[Image.Image], labels: Sequence[str], split: str, data_dirname: Path
+    crops: Sequence[Image.Image],
+    labels: Sequence[str],
+    split: str,
+    data_dirname: Path,
 ):
     (data_dirname / split).mkdir(parents=True, exist_ok=True)
 
@@ -160,7 +169,8 @@ def load_processed_crops_and_labels(split: str, data_dirname: Path):
 def load_processed_line_crops(split: str, data_dirname: Path):
     """Load line crops for given split from processed directory."""
     crop_filenames = sorted(
-        (data_dirname / split).glob("*.png"), key=lambda filename: int(Path(filename).stem)
+        (data_dirname / split).glob("*.png"),
+        key=lambda filename: int(Path(filename).stem),
     )
     crops = [util.read_image_pil(filename, grayscale=True) for filename in crop_filenames]
     return crops

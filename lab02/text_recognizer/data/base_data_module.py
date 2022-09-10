@@ -35,7 +35,7 @@ def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
     sha256 = util.compute_sha256(filename)
     if sha256 != metadata["sha256"]:
         raise ValueError(
-            "Downloaded data file SHA-256 does not match that listed in metadata document."
+            "Downloaded data file SHA-256 does not match that listed in metadata document.",
         )
     return filename
 

@@ -106,10 +106,10 @@ class IAM:
     def validation_ids(self):
         """A list of form IDs from IAM Lines LWITLRT validation sets 1 and 2."""
         val_ids = _get_ids_from_lwitlrt_split_file(
-            EXTRACTED_DATASET_DIRNAME / "task/validationset1.txt"
+            EXTRACTED_DATASET_DIRNAME / "task/validationset1.txt",
         )
         val_ids.extend(
-            _get_ids_from_lwitlrt_split_file(EXTRACTED_DATASET_DIRNAME / "task/validationset2.txt")
+            _get_ids_from_lwitlrt_split_file(EXTRACTED_DATASET_DIRNAME / "task/validationset2.txt"),
         )
         return val_ids
 

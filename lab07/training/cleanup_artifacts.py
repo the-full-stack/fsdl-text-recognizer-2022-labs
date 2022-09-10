@@ -60,7 +60,9 @@ def _setup_parser():
 
     flags = parser.add_mutually_exclusive_group()
     flags.add_argument(
-        "--all", action="store_true", help="Delete all artifacts from selected runs."
+        "--all",
+        action="store_true",
+        help="Delete all artifacts from selected runs.",
     )
     flags.add_argument(
         "--no-alias",
@@ -111,7 +113,10 @@ def clean_run_artifacts(run, selector, protect_aliases=True, verbose=False, dryr
     for artifact in artifacts:
         if selector(artifact):
             remove_artifact(
-                artifact, protect_aliases=protect_aliases, verbose=verbose, dryrun=dryrun
+                artifact,
+                protect_aliases=protect_aliases,
+                verbose=verbose,
+                dryrun=dryrun,
             )
 
 
@@ -120,7 +125,7 @@ def remove_artifact(artifact, protect_aliases, verbose=False, dryrun=True):
     type, aliases = artifact.type, artifact.aliases
     if verbose or dryrun:
         print(
-            f"selecting for deletion artifact {project}/{entity}/{id} of type {type} with aliases {aliases}"
+            f"selecting for deletion artifact {project}/{entity}/{id} of type {type} with aliases {aliases}",
         )
     if not dryrun:
         artifact.delete(delete_aliases=not protect_aliases)
@@ -175,7 +180,7 @@ def _get_selector_from(args, verbose=False):
     if args.aliases:
         if verbose:
             print(
-                f"removing all artifacts with any of {args.aliases} in aliases from matching runs"
+                f"removing all artifacts with any of {args.aliases} in aliases from matching runs",
             )
         return lambda artifact: any(alias in artifact.aliases for alias in args.aliases)
 
@@ -188,7 +193,7 @@ def _get_entity_from(args, verbose=False):
     entity = args.entity
     if entity is None:
         raise RuntimeError(
-            f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}."
+            f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}.",
         )
     elif entity == "DEFAULT":
         entity = DEFAULT_ENTITY

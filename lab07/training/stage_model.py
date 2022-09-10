@@ -58,7 +58,9 @@ def main(args):
 
     # otherwise, we'll need to download the weights, compile the model, and save it
     with wandb.init(
-        job_type="stage", project=args.to_project, dir=LOG_DIR
+        job_type="stage",
+        project=args.to_project,
+        dir=LOG_DIR,
     ):  # log staging to W&B so prod and training are connected
         # find the model checkpoint and retrieve its artifact name and an api handle
         ckpt_at, ckpt_api = find_artifact(
@@ -76,7 +78,9 @@ def main(args):
 
         # create an artifact for the staged, deployable model
         staged_at = wandb.Artifact(
-            args.staged_model_name, type=STAGED_MODEL_TYPE, metadata=metadata
+            args.staged_model_name,
+            type=STAGED_MODEL_TYPE,
+            metadata=metadata,
         )
         with tempfile.TemporaryDirectory() as tmp_dir:
             # download the checkpoint to a temporary directory
@@ -175,7 +179,10 @@ def load_model_from_checkpoint(ckpt_metadata, directory):
     # load LightningModule from checkpoint
     pth = Path(directory) / MODEL_CHECKPOINT_PATH
     lit_model = LITMODEL_CLASS.load_from_checkpoint(
-        checkpoint_path=pth, args=args, model=model, strict=False
+        checkpoint_path=pth,
+        args=args,
+        model=model,
+        strict=False,
     )
     lit_model.eval()
 
@@ -202,7 +209,7 @@ def _find_artifact_run(entity, project, type, run, alias):
         raise ValueError(f"No artifact with alias {alias} found at {run_name} of type {type}")
     if len(match) > 1:
         raise ValueError(
-            f"Multiple artifacts ({len(match)}) with alias {alias} found at {run_name} of type {type}"
+            f"Multiple artifacts ({len(match)}) with alias {alias} found at {run_name} of type {type}",
         )
     return f"{entity}/{project}/{match[0].name}"
 
@@ -224,7 +231,7 @@ def _find_artifact_project(entity, project, type, alias):
                     return f"{project_name}/{version.name}"
         raise ValueError(f"Artifact with alias {alias} not found in type {type} in {project_name}")
     raise ValueError(
-        f"Artifact type {type} not found. {project_name} could be private or not exist."
+        f"Artifact type {type} not found. {project_name} could be private or not exist.",
     )
 
 
@@ -232,7 +239,7 @@ def _get_entity_from(args):
     entity = args.entity
     if entity is None:
         raise RuntimeError(
-            f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}."
+            f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}.",
         )
     elif entity == "DEFAULT":
         entity = DEFAULT_ENTITY

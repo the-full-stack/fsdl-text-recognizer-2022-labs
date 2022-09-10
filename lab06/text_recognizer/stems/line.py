@@ -30,7 +30,7 @@ class LineStem(ImageStem):
                 [
                     transforms.ColorJitter(**color_jitter_kwargs),
                     transforms.RandomAffine(**random_affine_kwargs),
-                ]
+                ],
             )
 
 

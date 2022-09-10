@@ -33,7 +33,11 @@ class ConvBlock(nn.Module):
     ) -> None:
         super().__init__()
         self.conv = nn.Conv2d(
-            input_channels, output_channels, kernel_size=kernel_size, stride=stride, padding=padding
+            input_channels,
+            output_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
         )
         self.relu = nn.ReLU()
 

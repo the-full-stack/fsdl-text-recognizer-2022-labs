@@ -27,14 +27,14 @@ def test_character_error_rate():
             [0, 2, 2, 3, 3, 1],  # error will be 0
             [0, 2, 1, 1, 1, 1],  # error will be .75
             [0, 2, 2, 4, 4, 1],  # error will be .5
-        ]
+        ],
     )
     Y = torch.tensor(
         [
             [0, 2, 2, 3, 3, 1],
             [0, 2, 2, 3, 3, 1],
             [0, 2, 2, 3, 3, 1],
-        ]
+        ],
     )
     metric(X, Y)
     assert metric.compute() == sum([0, 0.75, 0.5]) / 3

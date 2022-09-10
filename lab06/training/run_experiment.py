@@ -129,7 +129,9 @@ def main():
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(
-            args.load_checkpoint, args=args, model=model
+            args.load_checkpoint,
+            args=args,
+            model=model,
         )
     else:
         lit_model = lit_model_class(args=args, model=model)
@@ -164,7 +166,9 @@ def main():
     callbacks += [cb.ModelSizeLogger(), cb.LearningRateMonitor()]
     if args.stop_early:
         early_stopping_callback = pl.callbacks.EarlyStopping(
-            monitor="validation/loss", mode="min", patience=args.stop_early
+            monitor="validation/loss",
+            mode="min",
+            patience=args.stop_early,
         )
         callbacks.append(early_stopping_callback)
 
@@ -175,7 +179,9 @@ def main():
     if args.profile:
         sched = torch.profiler.schedule(wait=0, warmup=3, active=4, repeat=0)
         profiler = pl.profiler.PyTorchProfiler(
-            export_to_chrome=True, schedule=sched, dirpath=experiment_dir
+            export_to_chrome=True,
+            schedule=sched,
+            dirpath=experiment_dir,
         )
         profiler.STEP_FUNCTIONS = {"training_step"}  # only profile training
     else:
@@ -184,7 +190,8 @@ def main():
     trainer.profiler = profiler
 
     trainer.tune(
-        lit_model, datamodule=data
+        lit_model,
+        datamodule=data,
     )  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)

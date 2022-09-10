@@ -46,5 +46,6 @@ class FakeImageData(BaseDataModule):
         )
         val_size = int(self.num_samples * 0.25)
         self.data_train, self.data_val, self.data_test = torch.utils.data.random_split(  # type: ignore
-            dataset=fake_dataset, lengths=[self.num_samples - 2 * val_size, val_size, val_size]
+            dataset=fake_dataset,
+            lengths=[self.num_samples - 2 * val_size, val_size, val_size],
         )

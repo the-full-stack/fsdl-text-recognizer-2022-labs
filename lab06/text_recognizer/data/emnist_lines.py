@@ -135,7 +135,7 @@ class EMNISTLines(BaseDataModule):
         from text_recognizer.data.sentence_generator import SentenceGenerator
 
         sentence_generator = SentenceGenerator(
-            self.max_length - 2
+            self.max_length - 2,
         )  # Subtract two because we will add start/end tokens
 
         emnist = self.emnist
@@ -144,12 +144,16 @@ class EMNISTLines(BaseDataModule):
 
         if split == "train":
             samples_by_char = get_samples_by_char(
-                emnist.x_trainval, emnist.y_trainval, emnist.mapping
+                emnist.x_trainval,
+                emnist.y_trainval,
+                emnist.mapping,
             )
             num = self.num_train
         elif split == "val":
             samples_by_char = get_samples_by_char(
-                emnist.x_trainval, emnist.y_trainval, emnist.mapping
+                emnist.x_trainval,
+                emnist.y_trainval,
+                emnist.mapping,
             )
             num = self.num_val
         else:
@@ -184,7 +188,9 @@ def get_samples_by_char(samples, labels, mapping):
 
 
 def select_letter_samples_for_string(
-    string, samples_by_char, char_shape=(metadata.CHAR_HEIGHT, metadata.CHAR_WIDTH)
+    string,
+    samples_by_char,
+    char_shape=(metadata.CHAR_HEIGHT, metadata.CHAR_WIDTH),
 ):
     zero_image = torch.zeros(char_shape, dtype=torch.uint8)
     sample_image_by_char = {}
@@ -198,7 +204,11 @@ def select_letter_samples_for_string(
 
 
 def construct_image_from_string(
-    string: str, samples_by_char: dict, min_overlap: float, max_overlap: float, width: int
+    string: str,
+    samples_by_char: dict,
+    min_overlap: float,
+    max_overlap: float,
+    width: int,
 ) -> torch.Tensor:
     overlap = np.random.uniform(min_overlap, max_overlap)
     sampled_images = select_letter_samples_for_string(string, samples_by_char)
@@ -213,21 +223,33 @@ def construct_image_from_string(
 
 
 def create_dataset_of_images(
-    N, samples_by_char, sentence_generator, min_overlap, max_overlap, dims
+    N,
+    samples_by_char,
+    sentence_generator,
+    min_overlap,
+    max_overlap,
+    dims,
 ):
     images = torch.zeros((N, dims[1], dims[2]))
     labels = []
     for n in range(N):
         label = sentence_generator.generate()
         images[n] = construct_image_from_string(
-            label, samples_by_char, min_overlap, max_overlap, dims[-1]
+            label,
+            samples_by_char,
+            min_overlap,
+            max_overlap,
+            dims[-1],
         )
         labels.append(label)
     return images, labels
 
 
 def convert_strings_to_labels(
-    strings: Sequence[str], mapping: Dict[str, int], length: int, with_start_end_tokens: bool
+    strings: Sequence[str],
+    mapping: Dict[str, int],
+    length: int,
+    with_start_end_tokens: bool,
 ) -> np.ndarray:
     """
     Convert sequence of N strings to a (N, length) ndarray, with each string wrapped with <S> and <E> tokens,

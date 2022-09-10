@@ -39,7 +39,7 @@ class IAMOriginalAndSyntheticParagraphs(BaseDataModule):
 
         if stage == "fit" or stage is None:
             self.data_train = ConcatDataset(
-                [self.iam_paragraphs.data_train, self.iam_syn_paragraphs.data_train]
+                [self.iam_paragraphs.data_train, self.iam_syn_paragraphs.data_train],
             )
             self.data_val = self.iam_paragraphs.data_val
 

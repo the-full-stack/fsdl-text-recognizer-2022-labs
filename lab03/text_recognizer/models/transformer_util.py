@@ -14,25 +14,33 @@ class PositionalEncodingImage(nn.Module):
     """
 
     def __init__(
-        self, d_model: int, max_h: int = 2000, max_w: int = 2000, persistent: bool = False
+        self,
+        d_model: int,
+        max_h: int = 2000,
+        max_w: int = 2000,
+        persistent: bool = False,
     ) -> None:
         super().__init__()
         self.d_model = d_model
         assert d_model % 2 == 0, f"Embedding depth {d_model} is not even"
         pe = self.make_pe(d_model=d_model, max_h=max_h, max_w=max_w)  # (d_model, max_h, max_w)
         self.register_buffer(
-            "pe", pe, persistent=persistent
+            "pe",
+            pe,
+            persistent=persistent,
         )  # not necessary to persist in state_dict, since it can be remade
 
     @staticmethod
     def make_pe(d_model: int, max_h: int, max_w: int) -> torch.Tensor:
         pe_h = PositionalEncoding.make_pe(
-            d_model=d_model // 2, max_len=max_h
+            d_model=d_model // 2,
+            max_len=max_h,
         )  # (max_h, 1 d_model // 2)
         pe_h = pe_h.permute(2, 0, 1).expand(-1, -1, max_w)  # (d_model // 2, max_h, max_w)
 
         pe_w = PositionalEncoding.make_pe(
-            d_model=d_model // 2, max_len=max_w
+            d_model=d_model // 2,
+            max_len=max_w,
         )  # (max_w, 1, d_model // 2)
         pe_w = pe_w.permute(2, 1, 0).expand(-1, max_h, -1)  # (d_model // 2, max_h, max_w)
 
@@ -51,13 +59,19 @@ class PositionalEncoding(torch.nn.Module):
     """Classic Attention-is-all-you-need positional encoding."""
 
     def __init__(
-        self, d_model: int, dropout: float = 0.1, max_len: int = 5000, persistent: bool = False
+        self,
+        d_model: int,
+        dropout: float = 0.1,
+        max_len: int = 5000,
+        persistent: bool = False,
     ) -> None:
         super().__init__()
         self.dropout = torch.nn.Dropout(p=dropout)
         pe = self.make_pe(d_model=d_model, max_len=max_len)  # (max_len, 1, d_model)
         self.register_buffer(
-            "pe", pe, persistent=persistent
+            "pe",
+            pe,
+            persistent=persistent,
         )  # not necessary to persist in state_dict, since it can be remade
 
     @staticmethod
