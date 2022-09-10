@@ -1,5 +1,5 @@
 """IAMParagraphs Stem class."""
-import torchvision.transforms as transforms
+from torchvision import transforms
 
 import text_recognizer.metadata.iam_paragraphs as metadata
 from text_recognizer.stems.image import ImageStem

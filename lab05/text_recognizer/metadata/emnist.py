@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import text_recognizer.metadata.shared as shared
+from text_recognizer.metadata import shared
 
 RAW_DATA_DIRNAME = shared.DATA_DIRNAME / "raw" / "emnist"
 METADATA_FILENAME = RAW_DATA_DIRNAME / "metadata.toml"

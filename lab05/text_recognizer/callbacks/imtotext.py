@@ -4,9 +4,9 @@ from pytorch_lightning.utilities import rank_zero_only
 try:
     import wandb
 
-    has_wandb = True
+    HAS_WANDB = True
 except ImportError:
-    has_wandb = False
+    HAS_WANDB = False
 
 from .util import check_and_warn
 
@@ -26,16 +26,14 @@ class ImageToTextTableLogger(pl.Callback):
             if self.has_metrics(output):
                 if check_and_warn(trainer.logger, "log_table", "image-to-text table"):
                     return
-                else:
-                    self._log_image_text_table(trainer, output, batch, "train/predictions")
+                self._log_image_text_table(trainer, output, batch, "train/predictions")
 
     @rank_zero_only
     def on_validation_batch_end(self, trainer, module, output, batch, batch_idx, dataloader_idx):
         if self.has_metrics(output):
             if check_and_warn(trainer.logger, "log_table", "image-to-text table"):
                 return
-            else:
-                self._log_image_text_table(trainer, output, batch, "validation/predictions")
+            self._log_image_text_table(trainer, output, batch, "validation/predictions")
 
     def _log_image_text_table(self, trainer, output, batch, key):
         xs, _ = batch
@@ -70,24 +68,21 @@ class ImageToTextCaptionLogger(pl.Callback):
         if self.has_metrics(output):
             if check_and_warn(trainer.logger, "log_image", "image-to-text"):
                 return
-            else:
-                self._log_image_text_caption(trainer, output, batch, "train/predictions")
+            self._log_image_text_caption(trainer, output, batch, "train/predictions")
 
     @rank_zero_only
     def on_validation_batch_end(self, trainer, module, output, batch, batch_idx, dataloader_idx):
         if self.has_metrics(output):
             if check_and_warn(trainer.logger, "log_image", "image-to-text"):
                 return
-            else:
-                self._log_image_text_caption(trainer, output, batch, "validation/predictions")
+            self._log_image_text_caption(trainer, output, batch, "validation/predictions")
 
     @rank_zero_only
     def on_test_batch_end(self, trainer, module, output, batch, batch_idx, dataloader_idx):
         if self.has_metrics(output):
             if check_and_warn(trainer.logger, "log_image", "image-to-text"):
                 return
-            else:
-                self._log_image_text_caption(trainer, output, batch, "test/predictions")
+            self._log_image_text_caption(trainer, output, batch, "test/predictions")
 
     def _log_image_text_caption(self, trainer, output, batch, key):
         xs, _ = batch

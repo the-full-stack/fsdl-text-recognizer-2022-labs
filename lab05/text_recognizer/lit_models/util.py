@@ -49,7 +49,9 @@ def replace_after(
     element: Union[int, float],
     replace: Union[int, float],
 ) -> torch.Tensor:
-    """Replace all values in each row of 2d Tensor x after the first appearance of element with replace.
+    """
+    Replace all values in each row of 2d Tensor x after the first appearance of element with
+    replace.
 
     Parameters
     ----------

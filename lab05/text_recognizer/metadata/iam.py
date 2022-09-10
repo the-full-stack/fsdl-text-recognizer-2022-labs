@@ -1,4 +1,4 @@
-import text_recognizer.metadata.shared as shared
+from text_recognizer.metadata import shared
 
 RAW_DATA_DIRNAME = shared.DATA_DIRNAME / "raw" / "iam"
 METADATA_FILENAME = RAW_DATA_DIRNAME / "metadata.toml"

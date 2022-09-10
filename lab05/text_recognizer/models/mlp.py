@@ -3,8 +3,8 @@ from typing import Any, Dict
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 FC1_DIM = 1024
 FC2_DIM = 128

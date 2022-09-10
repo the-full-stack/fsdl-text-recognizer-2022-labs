@@ -7,7 +7,7 @@ import torch
 from loguru import logger as log
 from pytorch_lightning.utilities.rank_zero import rank_zero_only
 
-from .util import check_and_warn, logging
+from .util import check_and_warn
 
 try:
     import torchviz
@@ -66,7 +66,7 @@ class GraphLogger(pl.Callback):
                 outputs = outputs[0][0]["extra"]
                 self.log_graph(trainer, module, outputs[self.output_key])
             except KeyError:
-                logging.warning(f"Unable to log graph: outputs not found at key {self.output_key}")
+                log.warning(f"Unable to log graph: outputs not found at key {self.output_key}")
             self.graph_logged = True
 
     @staticmethod
