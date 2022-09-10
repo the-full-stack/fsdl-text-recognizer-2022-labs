@@ -165,7 +165,7 @@ def save_crops_and_labels(crops: Dict[str, Image.Image], labels: Dict[str, str],
 
 def load_processed_crops_and_labels(split: str) -> Tuple[Sequence[Image.Image], Sequence[str]]:
     """Load processed crops and labels for given split."""
-    with open(_labels_filename(split), "r") as f:
+    with open(_labels_filename(split)) as f:
         labels = json.load(f)
 
     sorted_ids = sorted(labels.keys())
@@ -178,7 +178,7 @@ def load_processed_crops_and_labels(split: str) -> Tuple[Sequence[Image.Image], 
 
 def get_dataset_properties() -> dict:
     """Return properties describing the overall dataset."""
-    with open(PROCESSED_DATA_DIRNAME / "_properties.json", "r") as f:
+    with open(PROCESSED_DATA_DIRNAME / "_properties.json") as f:
         properties = json.load(f)
 
     def _get_property_values(key: str) -> list:

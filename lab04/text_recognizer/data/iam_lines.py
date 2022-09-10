@@ -85,10 +85,10 @@ class IAMLines(BaseDataModule):
 
             # quick check: do we have the right sequence lengths?
             assert (
-                self.output_dims[0] >= max([len(_) for _ in labels_train]) + 2
+                self.output_dims[0] >= max(len(_) for _ in labels_train) + 2
             )  # Add 2 for start/end tokens.
             assert (
-                self.output_dims[0] >= max([len(_) for _ in labels_val]) + 2
+                self.output_dims[0] >= max(len(_) for _ in labels_val) + 2
             )  # Add 2 for start/end tokens.
 
         if stage == "test" or stage is None:
@@ -101,7 +101,7 @@ class IAMLines(BaseDataModule):
             )
             self.data_test = BaseDataset(x_test, y_test, transform=self.transform)
 
-            assert self.output_dims[0] >= max([len(_) for _ in labels_test]) + 2
+            assert self.output_dims[0] >= max(len(_) for _ in labels_test) + 2
 
     def __repr__(self) -> str:
         """Print info about the dataset."""

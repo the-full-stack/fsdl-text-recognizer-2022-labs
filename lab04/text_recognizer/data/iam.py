@@ -71,7 +71,7 @@ class IAM:
     @cachedproperty
     def all_ids(self):
         """A list of all form IDs."""
-        return sorted([f.stem for f in self.xml_filenames])
+        return sorted(f.stem for f in self.xml_filenames)
 
     @cachedproperty
     def ids_by_split(self):
@@ -173,7 +173,7 @@ def _extract_raw_dataset(filename: Path, dirname: Path) -> None:
 
 def _get_ids_from_lwitlrt_split_file(filename: str) -> List[str]:
     """Get the ids from Large Writer Independent Text Line Recognition Task (LWITLRT) data split file."""
-    with open(filename, "r") as f:
+    with open(filename) as f:
         line_ids_str = f.read()
     line_ids = line_ids_str.split("\n")
     page_ids = list({"-".join(line_id.split("-")[:2]) for line_id in line_ids if line_id})
