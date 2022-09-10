@@ -103,7 +103,7 @@ line_length = 100
 default_section = "THIRDPARTY"
 known_first_party = ["fsdl"]
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
-add_imports = "from __future__ import annotations"
+# add_imports = "from __future__ import annotations"
 
 [tool.mypy]
 ignore_missing_imports = true
