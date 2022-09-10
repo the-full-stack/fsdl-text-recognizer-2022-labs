@@ -43,6 +43,7 @@ repos:
           - --expand-star-imports
           - --remove-duplicate-keys
           - --remove-unused-variables
+        exclude: __init__.py
   - repo: https://gitlab.com/pycqa/flake8
     rev: 4.0.1
     hooks:

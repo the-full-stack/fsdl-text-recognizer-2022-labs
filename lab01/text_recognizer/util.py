@@ -1,8 +1,6 @@
 """Utility functions for text_recognizer module."""
-import base64
 import contextlib
 import hashlib
-from io import BytesIO
 import os
 from pathlib import Path
 from typing import Union
