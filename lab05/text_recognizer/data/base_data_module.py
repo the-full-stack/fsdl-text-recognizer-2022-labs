@@ -6,6 +6,7 @@ from typing import Collection, Dict, Optional, Tuple, Union
 
 import pytorch_lightning as pl
 import torch
+from loguru import logger as log
 from torch.utils.data import ConcatDataset, DataLoader
 
 import text_recognizer.metadata.shared as metadata
@@ -21,7 +22,7 @@ def load_and_print_info(data_module_class) -> None:
     dataset = data_module_class(args)
     dataset.prepare_data()
     dataset.setup()
-    print(dataset)
+    log.info(dataset)
 
 
 def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
@@ -29,9 +30,9 @@ def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
     filename = dl_dirname / metadata["filename"]
     if filename.exists():
         return filename
-    print(f"Downloading raw dataset from {metadata['url']} to {filename}...")
+    log.info(f"Downloading raw dataset from {metadata['url']} to {filename}...")
     util.download_url(metadata["url"], filename)
-    print("Computing SHA-256...")
+    log.info("Computing SHA-256...")
     sha256 = util.compute_sha256(filename)
     if sha256 != metadata["sha256"]:
         raise ValueError(
@@ -46,14 +47,16 @@ NUM_AVAIL_GPUS = torch.cuda.device_count()
 
 # sensible multiprocessing defaults: at most one worker per CPU
 DEFAULT_NUM_WORKERS = NUM_AVAIL_CPUS
-# but in distributed data parallel mode, we launch a training on each GPU, so must divide out to keep total at one worker per CPU
+# but in distributed data parallel mode, we launch a training on each GPU, so must divide out to
+# keep total at one worker per CPU
 DEFAULT_NUM_WORKERS = NUM_AVAIL_CPUS // NUM_AVAIL_GPUS if NUM_AVAIL_GPUS else DEFAULT_NUM_WORKERS
 
 
 class BaseDataModule(pl.LightningDataModule):
     """Base for all of our LightningDataModules.
 
-    Learn more at about LDMs at https://pytorch-lightning.readthedocs.io/en/stable/extensions/datamodules.html
+    Learn more at about LDMs at
+    https://pytorch-lightning.readthedocs.io/en/stable/extensions/datamodules.html
     """
 
     def __init__(self, args: argparse.Namespace = None) -> None:
@@ -103,15 +106,16 @@ class BaseDataModule(pl.LightningDataModule):
     def prepare_data(self, *args, **kwargs) -> None:
         """Take the first steps to prepare data for use.
 
-        Use this method to do things that might write to disk or that need to be done only from a single GPU
-        in distributed settings (so don't set state `self.x = y`).
+        Use this method to do things that might write to disk or that need to be done only from a
+        single GPU in distributed settings (so don't set state `self.x = y`).
         """
 
     def setup(self, stage: Optional[str] = None) -> None:
         """Perform final setup to prepare data for consumption by DataLoader.
 
-        Here is where we typically split into train, validation, and test. This is done once per GPU in a DDP setting.
-        Should assign `torch Dataset` objects to self.data_train, self.data_val, and optionally self.data_test.
+        Here is where we typically split into train, validation, and test. This is done once per GPU
+        in a DDP setting. Should assign `torch Dataset` objects to self.data_train, self.data_val,
+        and optionally self.data_test.
         """
 
     def train_dataloader(self):

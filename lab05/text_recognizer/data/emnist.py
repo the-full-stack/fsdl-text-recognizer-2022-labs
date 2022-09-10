@@ -9,6 +9,8 @@ from typing import Sequence
 import h5py
 import numpy as np
 import toml
+from loguru import logger as log
+from scipy.io import loadmat
 
 import text_recognizer.metadata.emnist as metadata
 from text_recognizer.data.base_data_module import (
@@ -36,8 +38,9 @@ TRAIN_FRAC = 0.8
 class EMNIST(BaseDataModule):
     """EMNIST dataset of handwritten characters and digits.
 
-    "The EMNIST dataset is a set of handwritten character digits derived from the NIST Special Database 19
-    and converted to a 28x28 pixel image format and dataset structure that directly matches the MNIST dataset."
+    "The EMNIST dataset is a set of handwritten character digits derived from the NIST Special
+    Database 19 and converted to a 28x28 pixel image format and dataset structure that directly
+    matches the MNIST dataset."
     From https://www.nist.gov/itl/iad/image-group/emnist-dataset
 
     The data split we will use is
@@ -77,13 +80,17 @@ class EMNIST(BaseDataModule):
             self.data_test = BaseDataset(self.x_test, self.y_test, transform=self.transform)
 
     def __repr__(self):
-        basic = f"EMNIST Dataset\nNum classes: {len(self.mapping)}\nMapping: {self.mapping}\nDims: {self.input_dims}\n"
+        basic = (
+            f"EMNIST Dataset\nNum classes: {len(self.mapping)}\n"
+            f"Mapping: {self.mapping}\nDims: {self.input_dims}\n"
+        )
         if self.data_train is None and self.data_val is None and self.data_test is None:
             return basic
 
         x, y = next(iter(self.train_dataloader()))
         data = (
-            f"Train/val/test sizes: {len(self.data_train)}, {len(self.data_val)}, {len(self.data_test)}\n"
+            "Train/val/test sizes: "
+            f"{len(self.data_train)}, {len(self.data_val)}, {len(self.data_test)}\n"
             f"Batch x stats: {(x.shape, x.dtype, x.min(), x.mean(), x.std(), x.max())}\n"
             f"Batch y stats: {(y.shape, y.dtype, y.min(), y.max())}\n"
         )
@@ -97,29 +104,28 @@ def _download_and_process_emnist():
 
 
 def _process_raw_dataset(filename: str, dirname: Path):
-    print("Unzipping EMNIST...")
+    log.info("Unzipping EMNIST...")
     with temporary_working_directory(dirname):
         with zipfile.ZipFile(filename, "r") as zf:
             zf.extract("matlab/emnist-byclass.mat")
 
-        from scipy.io import loadmat
-
         # NOTE: If importing at the top of module, would need to list scipy as prod dependency.
 
-        print("Loading training data from .mat file")
+        log.info("Loading training data from .mat file")
         data = loadmat("matlab/emnist-byclass.mat")
         x_train = data["dataset"]["train"][0, 0]["images"][0, 0].reshape(-1, 28, 28).swapaxes(1, 2)
         y_train = data["dataset"]["train"][0, 0]["labels"][0, 0] + NUM_SPECIAL_TOKENS
         x_test = data["dataset"]["test"][0, 0]["images"][0, 0].reshape(-1, 28, 28).swapaxes(1, 2)
         y_test = data["dataset"]["test"][0, 0]["labels"][0, 0] + NUM_SPECIAL_TOKENS
-        # NOTE that we add NUM_SPECIAL_TOKENS to targets, since these tokens are the first class indices
+        # NOTE that we add NUM_SPECIAL_TOKENS to targets, since these tokens are
+        # the first class indices
 
         if SAMPLE_TO_BALANCE:
-            print("Balancing classes to reduce amount of data")
+            log.info("Balancing classes to reduce amount of data")
             x_train, y_train = _sample_to_balance(x_train, y_train)
             x_test, y_test = _sample_to_balance(x_test, y_test)
 
-        print("Saving to HDF5 in a compressed format...")
+        log.info("Saving to HDF5 in a compressed format...")
         PROCESSED_DATA_DIRNAME.mkdir(parents=True, exist_ok=True)
         with h5py.File(PROCESSED_DATA_FILENAME, "w") as f:
             f.create_dataset("x_train", data=x_train, dtype="u1", compression="lzf")
@@ -127,19 +133,21 @@ def _process_raw_dataset(filename: str, dirname: Path):
             f.create_dataset("x_test", data=x_test, dtype="u1", compression="lzf")
             f.create_dataset("y_test", data=y_test, dtype="u1", compression="lzf")
 
-        print("Saving essential dataset parameters to text_recognizer/data...")
+        log.info("Saving essential dataset parameters to text_recognizer/data...")
         mapping = {int(k): chr(v) for k, v in data["dataset"]["mapping"][0, 0]}
         characters = _augment_emnist_characters(list(mapping.values()))
         essentials = {"characters": characters, "input_shape": list(x_train.shape[1:])}
-        with open(ESSENTIALS_FILENAME, "w") as f:
+        with open(ESSENTIALS_FILENAME, "w", encoding="utf8") as f:
             json.dump(essentials, f)
 
-        print("Cleaning up...")
+        log.info("Cleaning up...")
         shutil.rmtree("matlab")
 
 
 def _sample_to_balance(x, y):
-    """Because the dataset is not balanced, we take at most the mean number of instances per class."""
+    """
+    Because the dataset is not balanced, we take at most the mean number of instances per class.
+    """
     np.random.seed(42)
     num_to_sample = int(np.bincount(y.flatten()).mean())
     all_sampled_inds = []

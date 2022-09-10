@@ -19,12 +19,13 @@ gradio = "^3.3"                                      # 3.0.21
 h5py = "^3.7.0"
 importlib-metadata = "^4.12.0"                       # >=4.4
 Jinja2 = "^3.1.2"                                    # >=2.11,<2.12  # versioned to match Google Colab up to minor
+loguru = "^0.6.0"
 markupsafe = "^2.1.1"                                # <2.1  # versioned to avoid breaking change in minor version update
 numpy = "^1.23.3"
 pillow = "^9.2.0"                                    # <7.2
 pyngrok = "^5.1.0"
 requests = "^2.28.1"
-smart_open = { version = "^6.1.0", optional = true }
+smart-open = { version = "^6.1.0", optional = true }
 torch = "^1.12.1"                                    # >=1.12,<1.13
 torchvision = "^0.13.1"                              # >=0.13
 tqdm = "^4.64.1"
@@ -36,7 +37,7 @@ black = "^22.8.0"
 boltons = "^21.0.0"
 darglint = "^1.8.1"
 defusedxml = "^0.7.1"
-detect-secrets = "^1.2.0"
+detect-secrets = "^1.3.0"
 flake8 = "^5.0.4"                     # "<4"
 flake8-annotations = "^2.9.1"
 flake8-bandit = "^4.1.1"
@@ -78,11 +79,11 @@ torchmetrics = "^0.9.3"               # <0.8
 tornado = "^6.2"                      # ">=5.1,<5.2"  # versioned to match Google Colab
 towncrier = "^21.9.0"
 types-toml = "^0.10.8"
-wandb = "^0.12.17"
+wandb = "^0.12.21"
 
 [tool.poetry.extras]
 coverage = ["toml"]
-smart_open = ["s3"]
+smart-open = ["s3"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -122,8 +123,44 @@ min-similarity-lines = 150
 max-statements = 89
 max-args = 22
 max-branches = 17
-# good-names = []
-# disable = []
+good-names = [
+	"_B",
+	"_C",
+	"_H",
+	"_W",
+	"B",
+	"c",
+	"f",
+	"fc",
+	"H",
+	"i",
+	"id",
+	"ii",
+	"m",
+	"n",
+	"N",
+	"r",
+	"S",
+	"Sy",
+	"t",
+	"WS",
+	"WW",
+	"x",
+	"ks",
+	"Y",
+	"pe",
+	"xt",
+	"y",
+	"yt",
+	"zf",
+]
+disable = [
+	"missing-function-docstring",
+	"missing-module-docstring",
+	"too-many-instance-attributes",
+	"too-many-ancestors",
+	"too-few-public-methods",
+]
 logging-format-style = "new"
 
 [tool.pytest.ini_options]

@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Sequence
 
 import numpy as np
+from loguru import logger as log
 from PIL import Image, ImageFile
 
 import text_recognizer.metadata.iam_lines as metadata
@@ -44,7 +45,7 @@ class IAMLines(BaseDataModule):
         if PROCESSED_DATA_DIRNAME.exists():
             return
 
-        print("Cropping IAM line regions...")
+        log.info("Cropping IAM line regions...")
         iam = IAM()
         iam.prepare_data()
         crops_train, labels_train = generate_line_crops_and_labels(iam, "train")
@@ -54,15 +55,15 @@ class IAMLines(BaseDataModule):
         shapes = np.array([crop.size for crop in crops_train + crops_val + crops_test])
         aspect_ratios = shapes[:, 0] / shapes[:, 1]
 
-        print("Saving images, labels, and statistics...")
+        log.info("Saving images, labels, and statistics...")
         save_images_and_labels(crops_train, labels_train, "train", PROCESSED_DATA_DIRNAME)
         save_images_and_labels(crops_val, labels_val, "val", PROCESSED_DATA_DIRNAME)
         save_images_and_labels(crops_test, labels_test, "test", PROCESSED_DATA_DIRNAME)
-        with open(PROCESSED_DATA_DIRNAME / "_max_aspect_ratio.txt", "w") as file:
+        with open(PROCESSED_DATA_DIRNAME / "_max_aspect_ratio.txt", "w", encoding="utf-8") as file:
             file.write(str(aspect_ratios.max()))
 
     def setup(self, stage: str = None) -> None:
-        with open(PROCESSED_DATA_DIRNAME / "_max_aspect_ratio.txt") as file:
+        with open(PROCESSED_DATA_DIRNAME / "_max_aspect_ratio.txt", encoding="utf-8") as file:
             max_aspect_ratio = float(file.read())
             image_width = int(metadata.IMAGE_HEIGHT * max_aspect_ratio)
             assert image_width <= metadata.IMAGE_WIDTH
@@ -118,7 +119,8 @@ class IAMLines(BaseDataModule):
         x, y = next(iter(self.train_dataloader()))
         xt, yt = next(iter(self.test_dataloader()))
         data = (
-            f"Train/val/test sizes: {len(self.data_train)}, {len(self.data_val)}, {len(self.data_test)}\n"
+            "Train/val/test sizes: "
+            f"{len(self.data_train)}, {len(self.data_val)}, {len(self.data_test)}\n"
             f"Train Batch x stats: {(x.shape, x.dtype, x.min(), x.mean(), x.std(), x.max())}\n"
             f"Train Batch y stats: {(y.shape, y.dtype, y.min(), y.max())}\n"
             f"Test Batch x stats: {(xt.shape, xt.dtype, xt.min(), xt.mean(), xt.std(), xt.max())}\n"
@@ -152,7 +154,7 @@ def save_images_and_labels(
 ):
     (data_dirname / split).mkdir(parents=True, exist_ok=True)
 
-    with open(data_dirname / split / "_labels.json", "w") as f:
+    with open(data_dirname / split / "_labels.json", "w", encoding="utf-8") as f:
         json.dump(labels, f)
     for ind, crop in enumerate(crops):
         crop.save(data_dirname / split / f"{ind}.png")
@@ -178,7 +180,7 @@ def load_processed_line_crops(split: str, data_dirname: Path):
 
 def load_processed_line_labels(split: str, data_dirname: Path):
     """Load line labels for given split from processed directory."""
-    with open(data_dirname / split / "_labels.json") as file:
+    with open(data_dirname / split / "_labels.json", encoding="utf-8") as file:
         labels = json.load(file)
     return labels
 

@@ -53,7 +53,8 @@ class ResnetTransformer(nn.Module):
         self.resnet = torch.nn.Sequential(
             *(list(resnet.children())[:-2]),
         )  # Exclude AvgPool and Linear layers
-        # Resnet will output (B, RESNET_DIM, _H, _W) logits where _H = input_H // 32, _W = input_W // 32
+        # Resnet will output
+        # (B, RESNET_DIM, _H, _W) logits where _H = input_H // 32, _W = input_W // 32
 
         self.encoder_projection = nn.Conv2d(RESNET_DIM, self.dim, kernel_size=1)
         # encoder_projection will output (B, dim, _H, _W) logits
@@ -154,7 +155,8 @@ class ResnetTransformer(nn.Module):
 
         Returns
         -------
-            (Sx, B, E) sequence of embeddings, going left-to-right, top-to-bottom from final ResNet feature maps
+            (Sx, B, E) sequence of embeddings, going left-to-right, top-to-bottom from final ResNet
+            feature maps
         """
         _B, C, _H, _W = x.shape
         if C == 1:
@@ -166,7 +168,8 @@ class ResnetTransformer(nn.Module):
             x,
         )  # (B, E, _H // 32, _W // 32),   (B, 256, 18, 20) in the case of IAMParagraphs
 
-        # x = x * math.sqrt(self.dim)  # (B, E, _H // 32, _W // 32)  # This prevented any learning
+        # This prevented any learning:
+        # x = x * math.sqrt(self.dim)  # (B, E, _H // 32, _W // 32)  # noqa
         x = self.enc_pos_encoder(x)  # (B, E, Ho, Wo);     Ho = _H // 32, Wo = _W // 32
         x = torch.flatten(x, start_dim=2)  # (B, E, Ho * Wo)
         x = x.permute(2, 0, 1)  # (Sx, B, E);    Sx = Ho * Wo

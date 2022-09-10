@@ -17,7 +17,9 @@ TF_NHEAD = 4
 
 
 class LineCNNTransformer(nn.Module):
-    """Process the line through a CNN and process the resulting sequence with a Transformer decoder."""
+    """
+    Process the line through a CNN and process the resulting sequence with a Transformer decoder.
+    """
 
     def __init__(
         self,

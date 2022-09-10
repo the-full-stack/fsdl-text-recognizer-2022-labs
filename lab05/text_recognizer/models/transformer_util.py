@@ -2,8 +2,7 @@
 import math
 
 import torch
-import torch.nn as nn
-from torch import Tensor
+from torch import Tensor, nn
 
 
 class PositionalEncodingImage(nn.Module):
@@ -49,7 +48,7 @@ class PositionalEncodingImage(nn.Module):
 
     def forward(self, x: Tensor) -> Tensor:
         """pytorch.nn.module.forward"""
-        # x.shape = (B, d_model, H, W)
+        # x.shape = (B, d_model, H, W)  # noqa
         assert x.shape[1] == self.pe.shape[0]  # type: ignore
         x = x + self.pe[:, : x.size(2), : x.size(3)]  # type: ignore
         return x
@@ -85,7 +84,7 @@ class PositionalEncoding(torch.nn.Module):
         return pe
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x.shape = (S, B, d_model)
+        # x.shape = (S, B, d_model)  # noqa
         assert x.shape[2] == self.pe.shape[2]  # type: ignore
         x = x + self.pe[: x.size(0)]  # type: ignore
         return self.dropout(x)

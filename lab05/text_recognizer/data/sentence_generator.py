@@ -21,7 +21,10 @@ class SentenceGenerator:
         self.max_length = max_length
 
     def generate(self, max_length: Optional[int] = None) -> str:
-        """Sample a string from text of the Brown corpus of length at least one word and at most max_length."""
+        """
+        Sample a string from text of the Brown corpus of length at least one word and at most
+        max_length.
+        """
         if max_length is None:
             max_length = self.max_length
         if max_length is None:
@@ -37,14 +40,14 @@ class SentenceGenerator:
             if len(end_ind_candidates) == 0:  # sampling failed, try again
                 num_tries += 1
                 continue
-            else:
-                end_ind = np.random.choice(end_ind_candidates)
-                sampled_text = self.text[start_ind:end_ind].strip()
+
+            end_ind = np.random.choice(end_ind_candidates)
+            sampled_text = self.text[start_ind:end_ind].strip()
 
         if sampled_text is not None:
             return sampled_text
-        else:
-            raise RuntimeError("Was not able to generate a valid string")
+
+        raise RuntimeError("Was not able to generate a valid string")
 
     def _get_end_ind_candidates(self, first_ind: int, start_ind: int, max_length: int) -> List[int]:
         end_ind_candidates = []

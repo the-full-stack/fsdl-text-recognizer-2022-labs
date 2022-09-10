@@ -102,23 +102,26 @@ class TransformerLitModel(BaseImageToTextLitModel):
         """Maps an iterable of integers to a string using the lit model's mapping."""
         if ignore:
             return "".join([self.mapping[k] for k in ks if k not in self.ignore_tokens])
-        else:
-            return "".join([self.mapping[k] for k in ks])
+
+        return "".join([self.mapping[k] for k in ks])
 
     def batchmap(self, ks: Sequence[Sequence[int]], ignore=True) -> List[str]:
         """Maps a list of lists of integers to a list of strings using the lit model's mapping."""
         return [self.map(k, ignore) for k in ks]
 
     def get_preds(self, logitlikes: torch.Tensor, replace_after_end: bool = True) -> torch.Tensor:
-        """Converts logit-like Tensors into prediction indices, optionally overwritten after end token index.
+        """
+        Converts logit-like Tensors into prediction indices, optionally overwritten after end token
+        index.
 
         Parameters
         ----------
         logitlikes
-            (B, C, Sy) Tensor with classes as second dimension. The largest value is the one
-            whose index we will return. Logits, logprobs, and probs are all acceptable.
+            (B, C, Sy) Tensor with classes as second dimension. The largest value is the one whose
+            index we will return. Logits, logprobs, and probs are all acceptable.
         replace_after_end
-            Whether to replace values after the first appearance of the end token with the padding token.
+            Whether to replace values after the first appearance of the end token with the padding
+            token.
 
         Returns
         -------
@@ -128,5 +131,5 @@ class TransformerLitModel(BaseImageToTextLitModel):
         raw = torch.argmax(logitlikes, dim=1)  # (B, C, Sy) -> (B, Sy)
         if replace_after_end:
             return replace_after(raw, self.end_index, self.padding_index)  # (B, Sy)
-        else:
-            return raw  # (B, Sy)
+
+        return raw  # (B, Sy)

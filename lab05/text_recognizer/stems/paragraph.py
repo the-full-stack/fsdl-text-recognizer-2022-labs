@@ -47,7 +47,7 @@ class ParagraphStem(ImageStem):
             if sharpness_kwargs is None:
                 sharpness_kwargs = {"sharpness_factor": 2, "p": 0.5}
 
-            # IMAGE_SHAPE is (576, 640)
+            # IMAGE_SHAPE is (576, 640)  # noqa
             self.pil_transforms = transforms.Compose(
                 [
                     transforms.ColorJitter(**color_jitter_kwargs),

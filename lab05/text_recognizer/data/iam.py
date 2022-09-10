@@ -1,4 +1,8 @@
-"""Class for loading the IAM handwritten text dataset, which encompasses both paragraphs and lines, plus utilities."""
+"""
+Class for loading the IAM handwritten text dataset, which encompasses
+both paragraphs and lines, plus utilities.
+"""
+
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, cast
@@ -6,6 +10,7 @@ from typing import Any, Dict, List, Optional, cast
 import toml
 from boltons.cacheutils import cachedproperty
 from defusedxml import ElementTree
+from loguru import logger as log
 from PIL import Image, ImageOps
 
 import text_recognizer.metadata.iam as metadata
@@ -21,19 +26,21 @@ EXTRACTED_DATASET_DIRNAME = metadata.EXTRACTED_DATASET_DIRNAME
 class IAM:
     """A dataset of images of handwritten text written on a form underneath a typewritten prompt.
 
-    "The IAM Lines dataset, first published at the ICDAR 1999, contains forms of unconstrained handwritten text,
-    which were scanned at a resolution of 300dpi and saved as PNG images with 256 gray levels."
+    "The IAM Lines dataset, first published at the ICDAR 1999, contains forms of unconstrained
+    handwritten text, which were scanned at a resolution of 300dpi and saved as PNG images with 256
+    gray levels."
     From http://www.fki.inf.unibe.ch/databases/iam-handwriting-database
 
-    Images are identified by their "form ID". These IDs are used to separate train, validation and test splits,
-    as keys for dictonaries returning label and image crop region data, and more.
+    Images are identified by their "form ID". These IDs are used to separate train, validation and
+    test splits, as keys for dictonaries returning label and image crop region data, and more.
 
-    The data split we will use is
-    IAM lines Large Writer Independent Text Line Recognition Task (LWITLRT): 9,862 text lines.
+    The data split we will use is IAM lines Large Writer Independent Text Line Recognition Task
+    (LWITLRT): 9,862 text lines.
         The validation set has been merged into the train set.
         The train set has 7,101 lines from 326 writers.
         The test set has 1,861 lines from 128 writers.
-        The text lines of all data sets are mutually exclusive, thus each writer has contributed to one set only.
+        The text lines of all data sets are mutually exclusive, thus each writer has contributed to
+        one set only.
     """
 
     def __init__(self):
@@ -50,9 +57,9 @@ class IAM:
 
         The image is grayscale with white text on black background.
 
-        This image will have the printed prompt text at the top, above the handwritten text.
-        Images of individual words or lines and of whole paragraphs can be cropped out using the
-        relevant crop region data.
+        This image will have the printed prompt text at the top, above the handwritten text. Images
+        of individual words or lines and of whole paragraphs can be cropped out using the relevant
+        crop region data.
         """
         image = util.read_image_pil(self.form_filenames_by_id[id], grayscale=True)
         image = ImageOps.invert(image)
@@ -166,15 +173,17 @@ class IAM:
 
 
 def _extract_raw_dataset(filename: Path, dirname: Path) -> None:
-    print("Extracting IAM data")
+    log.info("Extracting IAM data")
     with util.temporary_working_directory(dirname):
         with zipfile.ZipFile(filename, "r") as zip_file:
             zip_file.extractall()
 
 
 def _get_ids_from_lwitlrt_split_file(filename: str) -> List[str]:
-    """Get the ids from Large Writer Independent Text Line Recognition Task (LWITLRT) data split file."""
-    with open(filename) as f:
+    """
+    Get the ids from Large Writer Independent Text Line Recognition Task (LWITLRT) data split file.
+    """
+    with open(filename, encoding="utf-8") as f:
         line_ids_str = f.read()
     line_ids = line_ids_str.split("\n")
     page_ids = list({"-".join(line_id.split("-")[:2]) for line_id in line_ids if line_id})
@@ -228,7 +237,8 @@ def _get_line_elements_from_xml_file(filename: str) -> List[Any]:
 
 def _get_region_from_xml_element(xml_elem: Any, xml_path: str) -> Optional[Dict[str, int]]:
     """
-    Get region from input xml element. The region is downsampled because the stored images are also downsampled.
+    Get region from input xml element. The region is downsampled because the stored images are also
+    downsampled.
 
     Parameters
     ----------
