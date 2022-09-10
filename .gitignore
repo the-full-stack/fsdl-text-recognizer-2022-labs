@@ -2,22 +2,35 @@
 data/downloaded
 data/processed
 data/interim
+!**/data/**/README.md
+!**/data/**/*.gitkeep
 
+# Secrets
+.env
 
 # Editors
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.RData
 *.sw?
 *~
+
+# Personal TODO files
+TODO.txt
 
 # Node
 node_modules
 
 # Python
-__pycache__
+**/__pycache__/*
+*.pyc
 .pytest_cache
 
 # notebooks
-.ipynb_checkpoints
+**/.ipynb_checkpoints/*
 *.nbconvert*.ipynb
 .notebook_test.sh
 
@@ -39,6 +52,14 @@ var/
 .installed.cfg
 *.egg
 
+# Environment
+venv/
+
+# coverage
+.coverage
+.coverage.*
+htmlcov
+
 # logging
 wandb
 *.pt
@@ -52,12 +73,15 @@ flagged
 # Misc
 .aws/credentials
 .DS_Store
-.env
 _labs
 .mypy_cache
 lab9/requirements.txt
-.coverage*
 /requirements.txt
 requirements/dev-lint.txt
 bootstrap.py
 **/fixme.py
+*.log
+*.pem
+pyrightconfig.json
+
+# https://www.gitignore.io/

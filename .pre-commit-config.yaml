@@ -1,41 +1,160 @@
+# Update all versions in this file by running:
+#   $ pre-commit autoupdate
+minimum_pre_commit_version: 2.20.0
+default_language_version:
+  python: python3.9
 repos:
-  # a set of useful Python-based pre-commit hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.3.0
     hooks:
       # list of definitions and supported hooks: https://pre-commit.com/hooks.html
+      - id: end-of-file-fixer
+        name: Check for a blank line at the end of scripts (auto-fixes)
       - id: trailing-whitespace      # removes any whitespace at the ends of lines
-      - id: check-toml               # check toml syntax by loading all toml files
-      - id: check-yaml               # check yaml syntax by loading all yaml files
-      - id: check-json               # check-json syntax by loading all json files
+      - id: check-builtin-literals
+      - id: check-byte-order-marker
+      - id: check-case-conflict
       - id: check-merge-conflict     # check for files with merge conflict strings
         args: ['--assume-in-merge']  #  and run this check even when not explicitly in a merge
-      - id: check-added-large-files  # check that no "large" files have been added
-        args: ['--maxkb=10240']      #  where large means 10MB+, as in Hugging Face's git server
+      - id: check-symlinks
+      - id: check-toml               # check toml syntax by loading all toml files
+      - id: check-vcs-permalinks
+      - id: check-xml
       - id: debug-statements         # check for python debug statements (import pdb, breakpoint, etc.)
       - id: detect-private-key       # checks for private keys (BEGIN X PRIVATE KEY, etc.)
-
-  # black python autoformatting
+      - id: mixed-line-ending
+      - id: fix-encoding-pragma
+        args: ["--remove"]
+      - id: check-yaml               # check yaml syntax by loading all yaml files
+      - id: check-json               # check-json syntax by loading all json files
+      - id: check-added-large-files  # check that no "large" files have been added
+        name: Check for files larger than 10 MB
+        args: ['--maxkb=10240']      #  where large means 10MB+, as in Hugging Face's git server
+      - id: check-ast
+      - id: check-docstring-first
+  - repo: https://github.com/myint/autoflake
+    rev: v1.5.3
+    hooks:
+      - id: autoflake
+        args: &autoflake
+          - --in-place
+          - --remove-all-unused-imports
+          - --expand-star-imports
+          - --remove-duplicate-keys
+          - --remove-unused-variables
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - &flake8
+        id: flake8
+        exclude: (lab01|lab02|lab03|lab04|lab06|lab07|lab08)
+        additional_dependencies:
+          - flake8-annotations
+          - flake8-bandit
+          - flake8-black
+          - flake8-bugbear
+          - flake8-docstrings==1.6.0
+          - flake8-eradicate==1.3.0
+          - flake8-fixme==1.1.1
+          - flake8-implicit-str-concat==0.3.0
+          - flake8-import-order
+          - flake8-no-pep420==2.3.0
+          - flake8-print==5.0.0
+          - flake8-return==1.1.3
+          - darglint
+          - mypy
+          - pycodestyle
+          - pydocstyle
+        # additional configuration of flake8 and extensions in setup.cfg
+        args: ["--config=setup.cfg"]
   - repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
       - id: black
-    # additional configuration of black in pyproject.toml
-
-  # flake8 python linter with all the fixins
-  - repo: https://github.com/PyCQA/flake8
-    rev: 3.9.2
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.2.3
     hooks:
-      - id: flake8
-        exclude: (lab01|lab02|lab03|lab04|lab06|lab07|lab08)
-        additional_dependencies: [
-          flake8-annotations, flake8-bandit, flake8-bugbear, flake8-black, flake8-docstrings,
-          flake8-import-order, darglint, mypy, pycodestyle, pydocstyle]
-        args: ["--config", ".flake8"]
-    # additional configuration of flake8 and extensions in .flake8
-
+      - id: add-trailing-comma
+        args: [--py36-plus]
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        types: [python]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.34.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - "--py37-plus"
   # shellcheck-py for linting shell files
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.8.0.4
     hooks:
       - id: shellcheck
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.3.0
+    hooks:
+      - id: detect-secrets
+        name: detect-secrets - Detect secrets in staged code
+        args: [
+            "--baseline",
+            ".secrets.baseline",
+            # https://regex101.com/
+            "--exclude-files 'poetry\\.lock'",
+            "--exclude-files '\\.secrets\\.baseline'",
+            "--exclude-files '\\.env\\.template'",
+            # "--exclude-files '.*\\.ipynb$'",
+            # "--exclude-files '.*build/'",
+            "--exclude-secrets 'password|ENTER_PASSWORD_HERE|INSERT_API_KEY_HERE'",
+            "--exclude-lines 'integrity=*sha'",
+          ]
+        # https://pre-commit.com/#regular-expressions
+        exclude: |
+          (?x)^(
+              poetry\.lock|
+              \.secrets\.baseline|
+              \.env\.template
+          )$
+  # - repo: https://github.com/python-poetry/poetry
+  #   rev: 1.2.0b3
+  - repo: https://github.com/john-sandall/mirrors-poetry
+    rev: 1.2.0
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
+        args: ["--no-update"]
+      - id: poetry-export
+        args:
+          [
+            "-f",
+            "requirements.txt",
+            "-o",
+            "requirements.txt",
+            "--without-hashes",
+          ]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.0
+    hooks:
+      - id: prettier
+        types_or: [yaml]
+        additional_dependencies:
+          - "prettier@2.7.1"
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint fsdl tests
+        # entry: bash -c 'pylint ./path/package1/; pylint ./path/package2/'
+        language: system
+        types: [python]
+        always_run: true
+        pass_filenames: false
+        stages: [manual]
+      - id: pip-audit
+        name: pip-audit
+        entry: pip-audit
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [manual]

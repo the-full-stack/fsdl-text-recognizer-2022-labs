@@ -1,0 +1,55 @@
+{
+    // editor & autoformatter settings
+    "editor.formatOnSave": true,
+    "editor.trimAutoWhitespace": true,
+    "files.trimTrailingWhitespace": true,
+    "prettier.enable": true,
+
+    // python - black
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [],
+
+    // python - other
+    "python.languageServer": "Pylance",
+    "python.pythonPath": "${env:VIRTUAL_ENV}",
+
+    // python - linting & static analysis
+    "python.analysis.extraPaths": ["fsdl"],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [],
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [],
+    "python.linting.pylintUseMinimalCheckers": false,
+
+    // python - isort
+    "python.sortImports.args": ["--recursive"],
+
+    // Python files only
+    "[python]": {
+        // isort on save
+        "editor.codeActionsOnSave": {"source.organizeImports": true},
+        // Stop the 'Black does not support "Format Selection"' message every
+        // time you paste something (https://stackoverflow.com/a/63612401/3279076)
+        "editor.formatOnPaste": false
+    },
+
+    // python - pytest (https://code.visualstudio.com/docs/python/testing)
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+
+    // git
+    "git.enabled": true,
+
+    // file associations
+    "workbench.editorAssociations": {"*.ipynb": "jupyter.notebook.ipynb"},
+    "files.associations": {
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements",
+    },
+
+    // Disable VS Code experiments to ensure consistent experience across the team
+    // (see https://github.com/microsoft/vscode-python/wiki/AB-Experiments)
+    "python.experiments.enabled": false,
+}
