@@ -20,7 +20,6 @@ import argparse
 
 import wandb
 
-
 api = wandb.Api()
 
 DEFAULT_PROJECT = "fsdl-text-recognizer-2022-training"

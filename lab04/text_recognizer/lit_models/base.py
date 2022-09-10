@@ -7,7 +7,6 @@ from torchmetrics import Accuracy
 
 from .metrics import CharacterErrorRate
 
-
 OPTIMIZER = "Adam"
 LR = 1e-3
 LOSS = "cross_entropy"

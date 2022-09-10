@@ -4,9 +4,8 @@ import math
 from typing import Any, Dict, Tuple, Union
 
 import torch
-from torch import nn
 import torch.nn.functional as F
-
+from torch import nn
 
 # Common type hints
 Param2D = Union[int, Tuple[int, int]]

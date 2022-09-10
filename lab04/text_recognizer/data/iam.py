@@ -1,18 +1,16 @@
 """Class for loading the IAM handwritten text dataset, which encompasses both paragraphs and lines, plus utilities."""
-from pathlib import Path
-from typing import Any, cast, Dict, List, Optional
 import zipfile
+from pathlib import Path
+from typing import Any, Dict, List, Optional, cast
 
+import text_recognizer.metadata.iam as metadata
+import toml
 from boltons.cacheutils import cachedproperty
 from defusedxml import ElementTree
 from PIL import Image, ImageOps
-import toml
-
 from text_recognizer import util
 from text_recognizer.data.base_data_module import _download_raw_dataset, load_and_print_info
-import text_recognizer.metadata.iam as metadata
 from text_recognizer.metadata.iam_paragraphs import NEW_LINE_TOKEN
-
 
 METADATA_FILENAME = metadata.METADATA_FILENAME
 DL_DATA_DIRNAME = metadata.DL_DATA_DIRNAME

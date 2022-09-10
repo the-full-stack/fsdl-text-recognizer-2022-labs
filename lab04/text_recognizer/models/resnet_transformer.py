@@ -4,15 +4,14 @@ import math
 from typing import Any, Dict
 
 import torch
-from torch import nn
 import torchvision
+from torch import nn
 
 from .transformer_util import (
-    generate_square_subsequent_mask,
     PositionalEncoding,
     PositionalEncodingImage,
+    generate_square_subsequent_mask,
 )
-
 
 TF_DIM = 256
 TF_FC_DIM = 1024

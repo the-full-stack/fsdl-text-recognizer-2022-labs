@@ -4,14 +4,12 @@ from typing import Dict, Sequence
 
 import h5py
 import numpy as np
+import text_recognizer.metadata.emnist_lines as metadata
 import torch
-
 from text_recognizer.data import EMNIST
 from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_recognizer.data.util import BaseDataset
-import text_recognizer.metadata.emnist_lines as metadata
 from text_recognizer.stems.image import ImageStem
-
 
 PROCESSED_DATA_DIRNAME = metadata.PROCESSED_DATA_DIRNAME
 ESSENTIALS_FILENAME = metadata.ESSENTIALS_FILENAME

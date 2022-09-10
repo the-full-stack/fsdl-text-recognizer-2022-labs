@@ -2,15 +2,15 @@
 import base64
 import contextlib
 import hashlib
-from io import BytesIO
 import os
+from io import BytesIO
 from pathlib import Path
 from typing import Union
 from urllib.request import urlretrieve
 
 import numpy as np
-from PIL import Image
 import smart_open
+from PIL import Image
 from tqdm import tqdm
 
 

@@ -4,7 +4,6 @@ import string
 import tempfile
 
 import pytorch_lightning as pl
-
 from text_recognizer.callbacks.util import check_and_warn
 
 

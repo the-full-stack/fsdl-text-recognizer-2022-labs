@@ -1,11 +1,10 @@
 """IAM Original and Synthetic Paragraphs Dataset class."""
 import argparse
 
-from torch.utils.data import ConcatDataset
-
 from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_recognizer.data.iam_paragraphs import IAMParagraphs
 from text_recognizer.data.iam_synthetic_paragraphs import IAMSyntheticParagraphs
+from torch.utils.data import ConcatDataset
 
 
 class IAMOriginalAndSyntheticParagraphs(BaseDataModule):

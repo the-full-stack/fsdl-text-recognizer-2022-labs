@@ -9,15 +9,13 @@ For details on how the W&B artifacts backing the checkpoints and models are hand
 see the documenation for stage_model.find_artifact.
 """
 import argparse
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import torch
 import wandb
-
 from text_recognizer.lit_models import TransformerLitModel
 from training.util import setup_data_and_model_from_args
-
 
 # these names are all set by the pl.loggers.WandbLogger
 MODEL_CHECKPOINT_TYPE = "model"

@@ -7,12 +7,11 @@ from pathlib import Path
 from typing import Callable
 
 import gradio as gr
+import requests
+import text_recognizer.util as util
 from PIL import ImageStat
 from PIL.Image import Image
-import requests
-
 from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
-import text_recognizer.util as util
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # do not use GPU
 

@@ -5,12 +5,11 @@ from pathlib import Path
 from typing import Collection, Dict, Optional, Tuple, Union
 
 import pytorch_lightning as pl
+import text_recognizer.metadata.shared as metadata
 import torch
-from torch.utils.data import ConcatDataset, DataLoader
-
 from text_recognizer import util
 from text_recognizer.data.util import BaseDataset
-import text_recognizer.metadata.shared as metadata
+from torch.utils.data import ConcatDataset, DataLoader
 
 
 def load_and_print_info(data_module_class) -> None:

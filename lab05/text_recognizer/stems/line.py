@@ -1,11 +1,9 @@
 import random
 
-from PIL import Image
-from torchvision import transforms
-
-
 import text_recognizer.metadata.iam_lines as metadata
+from PIL import Image
 from text_recognizer.stems.image import ImageStem
+from torchvision import transforms
 
 
 class LineStem(ImageStem):

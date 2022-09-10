@@ -5,7 +5,6 @@ import pytorch_lightning as pl
 import torch
 from torchmetrics import Accuracy
 
-
 OPTIMIZER = "Adam"
 LR = 1e-3
 LOSS = "cross_entropy"
