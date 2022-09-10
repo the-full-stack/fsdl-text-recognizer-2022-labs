@@ -2,7 +2,7 @@
 #   $ pre-commit autoupdate
 minimum_pre_commit_version: 2.20.0
 default_language_version:
-  python: python3.10
+  python: "python3.10"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
@@ -10,26 +10,27 @@ repos:
       # list of definitions and supported hooks: https://pre-commit.com/hooks.html
       - id: end-of-file-fixer
         name: Check for a blank line at the end of scripts (auto-fixes)
-      - id: trailing-whitespace      # removes any whitespace at the ends of lines
+      - id: trailing-whitespace # removes any whitespace at the ends of lines
       - id: check-builtin-literals
       - id: check-byte-order-marker
       - id: check-case-conflict
-      - id: check-merge-conflict     # check for files with merge conflict strings
-        args: ['--assume-in-merge']  #  and run this check even when not explicitly in a merge
+      - id: check-merge-conflict # check for files with merge conflict strings
+        args: ["--assume-in-merge"] #  and run this check even when not explicitly in a merge
       - id: check-symlinks
-      - id: check-toml               # check toml syntax by loading all toml files
+      - id: check-toml # check toml syntax by loading all toml files
       - id: check-vcs-permalinks
       - id: check-xml
-      - id: debug-statements         # check for python debug statements (import pdb, breakpoint, etc.)
-      - id: detect-private-key       # checks for private keys (BEGIN X PRIVATE KEY, etc.)
+      - id: debug-statements # check for python debug statements (import pdb, breakpoint, etc.)
+      - id: detect-private-key # checks for private keys (BEGIN X PRIVATE KEY, etc.)
       - id: mixed-line-ending
       - id: fix-encoding-pragma
         args: ["--remove"]
-      - id: check-yaml               # check yaml syntax by loading all yaml files
-      - id: check-json               # check-json syntax by loading all json files
-      - id: check-added-large-files  # check that no "large" files have been added
+      - id: check-yaml # check yaml syntax by loading all yaml files
+      - id: check-json # check-json syntax by loading all json files
+        exclude: ^.vscode/settings.json
+      - id: check-added-large-files # check that no "large" files have been added
         name: Check for files larger than 10 MB
-        args: ['--maxkb=10240']      #  where large means 10MB+, as in Hugging Face's git server
+        args: ["--maxkb=10240"] #  where large means 10MB+, as in Hugging Face's git server
       - id: check-ast
       - id: check-docstring-first
   - repo: https://github.com/myint/autoflake

@@ -34,4 +34,3 @@ tldr gcloud
 ```sh
 python -m ipykernel install --user --name fsdl --display-name "Python (fsdl)"
 ```
-
