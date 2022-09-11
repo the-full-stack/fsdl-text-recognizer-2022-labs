@@ -1,8 +1,10 @@
 """Base DataModule class."""
+from __future__ import annotations
+
 import argparse
 import os
 from pathlib import Path
-from typing import Collection, Dict, Optional, Tuple, Union
+from typing import Collection
 
 import pytorch_lightning as pl
 import torch
@@ -25,7 +27,7 @@ def load_and_print_info(data_module_class) -> None:
     log.info(dataset)
 
 
-def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
+def _download_raw_dataset(metadata: dict, dl_dirname: Path) -> Path:
     dl_dirname.mkdir(parents=True, exist_ok=True)
     filename = dl_dirname / metadata["filename"]
     if filename.exists():
@@ -68,12 +70,12 @@ class BaseDataModule(pl.LightningDataModule):
         self.on_gpu = isinstance(self.args.get("gpus", None), (str, int))
 
         # Make sure to set the variables below in subclasses
-        self.input_dims: Tuple[int, ...]
-        self.output_dims: Tuple[int, ...]
+        self.input_dims: tuple[int, ...]
+        self.output_dims: tuple[int, ...]
         self.mapping: Collection
-        self.data_train: Union[BaseDataset, ConcatDataset]
-        self.data_val: Union[BaseDataset, ConcatDataset]
-        self.data_test: Union[BaseDataset, ConcatDataset]
+        self.data_train: BaseDataset | ConcatDataset
+        self.data_val: BaseDataset | ConcatDataset
+        self.data_test: BaseDataset | ConcatDataset
 
     @classmethod
     def data_dirname(cls):
@@ -110,7 +112,7 @@ class BaseDataModule(pl.LightningDataModule):
         single GPU in distributed settings (so don't set state `self.x = y`).
         """
 
-    def setup(self, stage: Optional[str] = None) -> None:
+    def setup(self, stage: str | None = None) -> None:
         """Perform final setup to prepare data for consumption by DataLoader.
 
         Here is where we typically split into train, validation, and test. This is done once per GPU

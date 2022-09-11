@@ -1,4 +1,6 @@
 """IAM Original and Synthetic Paragraphs Dataset class."""
+from __future__ import annotations
+
 import argparse
 
 from torch.utils.data import ConcatDataset

@@ -8,6 +8,8 @@ If based on a model that is already converted and uploaded, the model file is do
 For details on how the W&B artifacts backing the checkpoints and models are handled,
 see the documenation for stage_model.find_artifact.
 """
+from __future__ import annotations
+
 import argparse
 import tempfile
 from pathlib import Path

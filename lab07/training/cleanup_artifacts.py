@@ -16,6 +16,8 @@ to reclaim some of that space.
 For usage help, run
     python training/cleanup_artifacts.py --help
 """
+from __future__ import annotations
+
 import argparse
 
 import wandb

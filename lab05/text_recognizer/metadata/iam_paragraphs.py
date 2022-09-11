@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from text_recognizer.metadata import emnist, shared
 
 PROCESSED_DATA_DIRNAME = shared.DATA_DIRNAME / "processed" / "iam_paragraphs"

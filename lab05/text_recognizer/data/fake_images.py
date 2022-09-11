@@ -1,4 +1,6 @@
 """A fake image dataset for testing."""
+from __future__ import annotations
+
 import argparse
 
 import torch

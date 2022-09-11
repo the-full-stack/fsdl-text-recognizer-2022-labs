@@ -1,5 +1,7 @@
 """An encoder-decoder Transformer model"""
-from typing import List, Sequence
+from __future__ import annotations
+
+from typing import Sequence
 
 import torch
 
@@ -105,7 +107,7 @@ class TransformerLitModel(BaseImageToTextLitModel):
         else:
             return "".join([self.mapping[k] for k in ks])
 
-    def batchmap(self, ks: Sequence[Sequence[int]], ignore=True) -> List[str]:
+    def batchmap(self, ks: Sequence[Sequence[int]], ignore=True) -> list[str]:
         """Maps a list of lists of integers to a list of strings using the lit model's mapping."""
         return [self.map(k, ignore) for k in ks]
 

@@ -1,7 +1,9 @@
 """IAM Synthetic Paragraphs Dataset class."""
+from __future__ import annotations
+
 import argparse
 import random
-from typing import Any, Callable, List, Sequence, Tuple
+from typing import Any, Callable, Sequence
 
 import numpy as np
 import torch
@@ -108,12 +110,12 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
 
     def __init__(
         self,
-        line_crops: List[Image.Image],
-        line_labels: List[str],
+        line_crops: list[Image.Image],
+        line_labels: list[str],
         dataset_len: int,
         inverse_mapping: dict,
-        input_dims: Tuple[int, ...],
-        output_dims: Tuple[int, ...],
+        input_dims: tuple[int, ...],
+        output_dims: tuple[int, ...],
         transform: Callable = None,
     ) -> None:
         super().__init__()
@@ -141,7 +143,7 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
             random.seed(seed)
             self.seed_set = True
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> tuple[Any, Any]:
         """Return a random paragraph, using the first index as a seed."""
         # Since shuffle is True for train dataloaders, the first index will be different on different GPUs
         self._set_seed(index)

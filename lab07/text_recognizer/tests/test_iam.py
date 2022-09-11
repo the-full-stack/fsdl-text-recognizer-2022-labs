@@ -1,4 +1,6 @@
 """Test for data.iam module."""
+from __future__ import annotations
+
 from text_recognizer.data.iam import IAM
 
 

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import argparse
 from collections import defaultdict
-from typing import Dict, Sequence
+from typing import Sequence
 
 import h5py
 import numpy as np
@@ -262,7 +264,7 @@ def create_dataset_of_images(
 
 def convert_strings_to_labels(
     strings: Sequence[str],
-    mapping: Dict[str, int],
+    mapping: dict[str, int],
     length: int,
     with_start_end_tokens: bool,
 ) -> np.ndarray:

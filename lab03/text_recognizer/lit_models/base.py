@@ -1,4 +1,6 @@
 """Basic LightningModules on which other modules can be built."""
+from __future__ import annotations
+
 import argparse
 
 import pytorch_lightning as pl

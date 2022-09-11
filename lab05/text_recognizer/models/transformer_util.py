@@ -1,4 +1,6 @@
 """Position Encoding and other utilities for Transformers."""
+from __future__ import annotations
+
 import math
 
 import torch
