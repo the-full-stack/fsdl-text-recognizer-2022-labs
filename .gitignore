@@ -2,6 +2,7 @@
 data/downloaded
 data/processed
 data/interim
+**/data/**/*.pkl.gz
 !**/data/**/README.md
 !**/data/**/*.gitkeep
 

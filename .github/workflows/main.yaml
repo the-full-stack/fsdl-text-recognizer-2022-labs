@@ -79,8 +79,8 @@ jobs:
       # - name: mypy
       #   run: mypy .
 
-      - name: pytest
-        # run: pytest --junitxml=junit.xml --cov --cov-report=term-missing:skip-covered --cov-report=xml
-        run: |
-          source venv/bin/activate
-          pytest
+      # - name: pytest
+      #   # run: pytest --junitxml=junit.xml --cov --cov-report=term-missing:skip-covered --cov-report=xml
+      #   run: |
+      #     source venv/bin/activate
+      #     pytest
