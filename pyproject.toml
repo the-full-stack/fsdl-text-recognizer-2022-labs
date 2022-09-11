@@ -11,7 +11,7 @@ classifiers = ["Private :: Do Not Upload"]
 packages = [{ include = "fsdl", from = "fsdl" }]
 
 [tool.poetry.dependencies]
-python = ">=3.10.6,<3.11"
+python = ">=3.10.4,<3.11"
 # Everything below here is alphabetically sorted
 coverage = { version = "^6.4.4", optional = true }   # 6.4  # versioned to give pip hints
 gantry = "^0.4.10"                                   # ==0.4.5 versioned for stability
@@ -26,8 +26,8 @@ pillow = "^9.2.0"                                    # <7.2
 pyngrok = "^5.1.0"
 requests = "^2.28.1"
 smart-open = { version = "^6.1.0", optional = true }
-torch = "^1.12.1"                                    # >=1.12,<1.13
-torchvision = "^0.13.1"                              # >=0.13
+torch = {version = "^1.12.1", source = "pytorch"}      # >=1.12,<1.13
+torchvision = {version = "^0.13.1", source = "pytorch" } # >=0.13
 tqdm = "^4.64.1"
 
 [tool.poetry.dev-dependencies]
@@ -84,6 +84,11 @@ wandb = "^0.12.21"
 [tool.poetry.extras]
 coverage = ["toml"]
 smart-open = ["s3"]
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu116"
+secondary = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
