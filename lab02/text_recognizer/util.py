@@ -1,16 +1,15 @@
 """Utility functions for text_recognizer module."""
-import base64
+from __future__ import annotations
+
 import contextlib
 import hashlib
-from io import BytesIO
 import os
 from pathlib import Path
-from typing import Union
 from urllib.request import urlretrieve
 
 import numpy as np
-from PIL import Image
 import smart_open
+from PIL import Image
 from tqdm import tqdm
 
 
@@ -19,7 +18,7 @@ def to_categorical(y, num_classes):
     return np.eye(num_classes, dtype="uint8")[y]
 
 
-def read_image_pil(image_uri: Union[Path, str], grayscale=False) -> Image:
+def read_image_pil(image_uri: Path | str, grayscale=False) -> Image:
     with smart_open.open(image_uri, "rb") as image_file:
         return read_image_pil_file(image_file, grayscale)
 
@@ -34,7 +33,7 @@ def read_image_pil_file(image_file, grayscale=False) -> Image:
 
 
 @contextlib.contextmanager
-def temporary_working_directory(working_dir: Union[str, Path]):
+def temporary_working_directory(working_dir: str | Path):
     """Temporarily switches to a directory, then returns to the original directory on exit."""
     curdir = os.getcwd()
     os.chdir(working_dir)
@@ -44,7 +43,7 @@ def temporary_working_directory(working_dir: Union[str, Path]):
         os.chdir(curdir)
 
 
-def compute_sha256(filename: Union[Path, str]):
+def compute_sha256(filename: Path | str):
     """Return SHA256 checksum of a file."""
     with open(filename, "rb") as f:
         return hashlib.sha256(f.read()).hexdigest()

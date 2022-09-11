@@ -1,12 +1,13 @@
 """Basic building blocks for convolutional models over lines of text."""
+from __future__ import annotations
+
 import argparse
 import math
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Tuple, Union
 
 import torch
-from torch import nn
 import torch.nn.functional as F
-
+from torch import nn
 
 # Common type hints
 Param2D = Union[int, Tuple[int, int]]
@@ -32,7 +33,13 @@ class ConvBlock(nn.Module):
         padding: Param2D = 1,
     ) -> None:
         super().__init__()
-        self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=kernel_size, stride=stride, padding=padding)
+        self.conv = nn.Conv2d(
+            input_channels,
+            output_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+        )
         self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -60,7 +67,7 @@ class LineCNN(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
         super().__init__()
@@ -88,7 +95,11 @@ class LineCNN(nn.Module):
             ConvBlock(conv_dim * 2, conv_dim * 4, stride=2),
             ConvBlock(conv_dim * 4, conv_dim * 4),
             ConvBlock(
-                conv_dim * 4, fc_dim, kernel_size=(H // 8, self.WW // 8), stride=(H // 8, self.WS // 8), padding=0
+                conv_dim * 4,
+                fc_dim,
+                kernel_size=(H // 8, self.WW // 8),
+                stride=(H // 8, self.WS // 8),
+                padding=0,
             ),
         )
         self.fc1 = nn.Linear(fc_dim, fc_dim)

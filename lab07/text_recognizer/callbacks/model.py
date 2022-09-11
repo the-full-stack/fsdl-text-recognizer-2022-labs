@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import pytorch_lightning as pl
-from pytorch_lightning.utilities.rank_zero import rank_zero_only
 import torch
+from pytorch_lightning.utilities.rank_zero import rank_zero_only
 
 from .util import check_and_warn, logging
 

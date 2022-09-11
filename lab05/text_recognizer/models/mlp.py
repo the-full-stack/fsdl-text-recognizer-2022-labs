@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import argparse
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 FC1_DIM = 1024
 FC2_DIM = 128
@@ -16,7 +18,7 @@ class MLP(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
 

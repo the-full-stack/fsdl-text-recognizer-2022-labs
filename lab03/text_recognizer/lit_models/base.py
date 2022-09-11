@@ -1,4 +1,6 @@
 """Basic LightningModules on which other modules can be built."""
+from __future__ import annotations
+
 import argparse
 
 import pytorch_lightning as pl
@@ -6,7 +8,6 @@ import torch
 from torchmetrics import Accuracy
 
 from .metrics import CharacterErrorRate
-
 
 OPTIMIZER = "Adam"
 LR = 1e-3
@@ -46,11 +47,21 @@ class BaseLitModel(pl.LightningModule):
 
     @staticmethod
     def add_to_argparse(parser):
-        parser.add_argument("--optimizer", type=str, default=OPTIMIZER, help="optimizer class from torch.optim")
+        parser.add_argument(
+            "--optimizer",
+            type=str,
+            default=OPTIMIZER,
+            help="optimizer class from torch.optim",
+        )
         parser.add_argument("--lr", type=float, default=LR)
         parser.add_argument("--one_cycle_max_lr", type=float, default=None)
         parser.add_argument("--one_cycle_total_steps", type=int, default=ONE_CYCLE_TOTAL_STEPS)
-        parser.add_argument("--loss", type=str, default=LOSS, help="loss function from torch.nn.functional")
+        parser.add_argument(
+            "--loss",
+            type=str,
+            default=LOSS,
+            help="loss function from torch.nn.functional",
+        )
         return parser
 
     def configure_optimizers(self):
@@ -58,7 +69,9 @@ class BaseLitModel(pl.LightningModule):
         if self.one_cycle_max_lr is None:
             return optimizer
         scheduler = torch.optim.lr_scheduler.OneCycleLR(
-            optimizer=optimizer, max_lr=self.one_cycle_max_lr, total_steps=self.one_cycle_total_steps
+            optimizer=optimizer,
+            max_lr=self.one_cycle_max_lr,
+            total_steps=self.one_cycle_total_steps,
         )
         return {"optimizer": optimizer, "lr_scheduler": scheduler, "monitor": "validation/loss"}
 

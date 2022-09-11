@@ -1,9 +1,10 @@
 """Base Dataset class."""
-from typing import Any, Callable, Dict, Sequence, Tuple, Union
+from __future__ import annotations
 
-from PIL import Image
+from typing import Any, Callable, Sequence, Union
+
 import torch
-
+from PIL import Image
 
 SequenceOrTensor = Union[Sequence, torch.Tensor]
 
@@ -44,7 +45,7 @@ class BaseDataset(torch.utils.data.Dataset):
         """Return length of the dataset."""
         return len(self.data)
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> tuple[Any, Any]:
         """
         Return a datum and its target, after processing by transforms.
 
@@ -67,7 +68,11 @@ class BaseDataset(torch.utils.data.Dataset):
         return datum, target
 
 
-def convert_strings_to_labels(strings: Sequence[str], mapping: Dict[str, int], length: int) -> torch.Tensor:
+def convert_strings_to_labels(
+    strings: Sequence[str],
+    mapping: dict[str, int],
+    length: int,
+) -> torch.Tensor:
     """
     Convert sequence of N strings to a (N, length) ndarray, with each string wrapped with <S> and <E> tokens,
     and padded with the <P> token.
@@ -81,7 +86,11 @@ def convert_strings_to_labels(strings: Sequence[str], mapping: Dict[str, int], l
     return labels
 
 
-def split_dataset(base_dataset: BaseDataset, fraction: float, seed: int) -> Tuple[BaseDataset, BaseDataset]:
+def split_dataset(
+    base_dataset: BaseDataset,
+    fraction: float,
+    seed: int,
+) -> tuple[BaseDataset, BaseDataset]:
     """
     Split input base_dataset into 2 base datasets, the first of size fraction * size of the base_dataset and the
     other of size (1 - fraction) * size of the base_dataset.
@@ -89,7 +98,9 @@ def split_dataset(base_dataset: BaseDataset, fraction: float, seed: int) -> Tupl
     split_a_size = int(fraction * len(base_dataset))
     split_b_size = len(base_dataset) - split_a_size
     return torch.utils.data.random_split(  # type: ignore
-        base_dataset, [split_a_size, split_b_size], generator=torch.Generator().manual_seed(seed)
+        base_dataset,
+        [split_a_size, split_b_size],
+        generator=torch.Generator().manual_seed(seed),
     )
 
 
@@ -97,4 +108,7 @@ def resize_image(image: Image.Image, scale_factor: int) -> Image.Image:
     """Resize image by scale factor."""
     if scale_factor == 1:
         return image
-    return image.resize((image.width // scale_factor, image.height // scale_factor), resample=Image.BILINEAR)
+    return image.resize(
+        (image.width // scale_factor, image.height // scale_factor),
+        resample=Image.BILINEAR,
+    )

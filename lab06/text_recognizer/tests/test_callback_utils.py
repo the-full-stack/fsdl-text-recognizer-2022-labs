@@ -1,4 +1,6 @@
 """Tests for the text_recognizer.callbacks.util module."""
+from __future__ import annotations
+
 import random
 import string
 import tempfile

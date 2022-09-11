@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create virtualenv
+        run: |
+          which python
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --constraint=.github/workflows/constraints.txt --upgrade pip
+          which python
+
+      - name: Set up Poetry cache
+        uses: actions/cache@v3.0.8
+        with:
+          path: venv
+          key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+
+      - name: Install Poetry and Python dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry --version
+          poetry config virtualenvs.in-project true
+          poetry config virtualenvs.create false
+          poetry config virtualenvs.path venv
+          source venv/bin/activate
+          which python
+          poetry install --no-root
+
+      - name: Compute pre-commit cache key
+        id: pre-commit-cache
+        shell: python
+        run: |
+          import hashlib
+          import sys
+          python = "py{}.{}".format(*sys.version_info[:2])
+          payload = sys.version.encode() + sys.executable.encode()
+          digest = hashlib.sha256(payload).hexdigest()
+          result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
+          print("::set-output name=result::{}".format(result))
+
+      - name: Restore pre-commit cache
+        uses: actions/cache@v3.0.8
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ steps.pre-commit-cache.outputs.result }}-
+
+      - name: pre-commit
+        run: |
+          source venv/bin/activate
+          pre-commit run --hook-stage=manual --show-diff-on-failure --all-files
+
+      # - name: mypy
+      #   run: mypy .
+
+      # - name: pytest
+      #   # run: pytest --junitxml=junit.xml --cov --cov-report=term-missing:skip-covered --cov-report=xml
+      #   run: |
+      #     source venv/bin/activate
+      #     pytest

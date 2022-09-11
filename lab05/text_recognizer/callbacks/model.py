@@ -1,19 +1,22 @@
+from __future__ import annotations
+
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import pytorch_lightning as pl
-from pytorch_lightning.utilities.rank_zero import rank_zero_only
 import torch
+from loguru import logger as log
+from pytorch_lightning.utilities.rank_zero import rank_zero_only
 
-from .util import check_and_warn, logging
+from .util import check_and_warn
 
 try:
     import torchviz
 
-    has_torchviz = True
+    HAS_TORCHVIZ = True
 except ImportError:
-    has_torchviz = False
+    HAS_TORCHVIZ = False
 
 
 class ModelSizeLogger(pl.Callback):
@@ -33,7 +36,7 @@ class ModelSizeLogger(pl.Callback):
         metrics["nparams"] = count_params(module)
 
         if self.print_size:
-            print(f"Model State Dict Disk Size: {round(metrics['mb_disk'], 2)} MB")
+            log.info(f"Model State Dict Disk Size: {round(metrics['mb_disk'], 2)} MB")
 
         metrics = {f"size/{key}": value for key, value in metrics.items()}
 
@@ -55,7 +58,7 @@ class GraphLogger(pl.Callback):
         super().__init__()
         self.graph_logged = False
         self.output_key = output_key
-        if not has_torchviz:
+        if not HAS_TORCHVIZ:
             raise ImportError("GraphLogCallback requires torchviz." "")
 
     @rank_zero_only
@@ -65,7 +68,7 @@ class GraphLogger(pl.Callback):
                 outputs = outputs[0][0]["extra"]
                 self.log_graph(trainer, module, outputs[self.output_key])
             except KeyError:
-                logging.warning(f"Unable to log graph: outputs not found at key {self.output_key}")
+                log.warning(f"Unable to log graph: outputs not found at key {self.output_key}")
             self.graph_logged = True
 
     @staticmethod

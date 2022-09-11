@@ -1,11 +1,13 @@
 """MNIST DataModule."""
+from __future__ import annotations
+
 import argparse
 
 from torch.utils.data import random_split
 from torchvision.datasets import MNIST as TorchMNIST
 
-from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 import text_recognizer.metadata.mnist as metadata
+from text_recognizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_recognizer.stems.image import MNISTStem
 
 

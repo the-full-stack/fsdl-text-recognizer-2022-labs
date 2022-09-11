@@ -1,4 +1,6 @@
 """Provide an image of handwritten text and get back out a string!"""
+from __future__ import annotations
+
 import argparse
 import json
 import logging
@@ -7,12 +9,12 @@ from pathlib import Path
 from typing import Callable
 
 import gradio as gr
+import requests
 from PIL import ImageStat
 from PIL.Image import Image
-import requests
 
-from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
 import text_recognizer.util as util
+from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # do not use GPU
 

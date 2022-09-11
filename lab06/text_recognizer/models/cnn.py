@@ -1,11 +1,12 @@
 """Basic convolutional model building blocks."""
+from __future__ import annotations
+
 import argparse
-from typing import Any, Dict
+from typing import Any
 
 import torch
-from torch import nn
 import torch.nn.functional as F
-
+from torch import nn
 
 CONV_DIM = 64
 FC_DIM = 128
@@ -43,7 +44,7 @@ class ConvBlock(nn.Module):
 class CNN(nn.Module):
     """Simple CNN for recognizing characters in a square image."""
 
-    def __init__(self, data_config: Dict[str, Any], args: argparse.Namespace = None) -> None:
+    def __init__(self, data_config: dict[str, Any], args: argparse.Namespace = None) -> None:
         super().__init__()
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config
@@ -86,7 +87,9 @@ class CNN(nn.Module):
             (B, Cl) tensor
         """
         _B, _Ch, H, W = x.shape
-        assert H == self.input_height and W == self.input_width, f"bad inputs to CNN with shape {x.shape}"
+        assert (
+            H == self.input_height and W == self.input_width
+        ), f"bad inputs to CNN with shape {x.shape}"
         x = self.conv1(x)  # _B, CONV_DIM, H, W
         x = self.conv2(x)  # _B, CONV_DIM, H, W
         x = self.max_pool(x)  # _B, CONV_DIM, H // 2, W // 2

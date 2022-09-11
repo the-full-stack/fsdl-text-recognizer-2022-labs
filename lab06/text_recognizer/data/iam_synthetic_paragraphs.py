@@ -1,13 +1,16 @@
 """IAM Synthetic Paragraphs Dataset class."""
+from __future__ import annotations
+
 import argparse
 import random
-from typing import Any, Callable, List, Sequence, Tuple
+from typing import Any, Callable, Sequence
 
 import numpy as np
+import torch
 from PIL import Image
 from pytorch_lightning.utilities.rank_zero import rank_zero_info
-import torch
 
+import text_recognizer.metadata.iam_synthetic_paragraphs as metadata
 from text_recognizer.data.base_data_module import load_and_print_info
 from text_recognizer.data.iam import IAM
 from text_recognizer.data.iam_lines import (
@@ -18,8 +21,6 @@ from text_recognizer.data.iam_lines import (
 )
 from text_recognizer.data.iam_paragraphs import IAMParagraphs
 from text_recognizer.data.util import convert_strings_to_labels
-import text_recognizer.metadata.iam_synthetic_paragraphs as metadata
-
 
 NEW_LINE_TOKEN = metadata.NEW_LINE_TOKEN
 PROCESSED_DATA_DIRNAME = metadata.PROCESSED_DATA_DIRNAME
@@ -44,19 +45,23 @@ class IAMSyntheticParagraphs(IAMParagraphs):
         if PROCESSED_DATA_DIRNAME.exists():
             return
         rank_zero_info(
-            "IAMSyntheticParagraphs.prepare_data: preparing IAM lines for synthetic IAM paragraph creation..."
+            "IAMSyntheticParagraphs.prepare_data: preparing IAM lines for synthetic IAM paragraph creation...",
         )
 
         iam = IAM()
         iam.prepare_data()
 
         for split in ["train"]:  # synthetic dataset is only used in training phase
-            rank_zero_info(f"Cropping IAM line regions and loading labels for {split} data split...")
+            rank_zero_info(
+                f"Cropping IAM line regions and loading labels for {split} data split...",
+            )
             crops, labels = generate_line_crops_and_labels(iam, split)
             save_images_and_labels(crops, labels, split, PROCESSED_DATA_DIRNAME)
 
     def setup(self, stage: str = None) -> None:
-        rank_zero_info(f"IAMSyntheticParagraphs.setup({stage}): Loading train IAM paragraph regions and lines...")
+        rank_zero_info(
+            f"IAMSyntheticParagraphs.setup({stage}): Loading train IAM paragraph regions and lines...",
+        )
 
         if stage == "fit" or stage is None:
             self._load_processed_crops_and_labels()
@@ -105,12 +110,12 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
 
     def __init__(
         self,
-        line_crops: List[Image.Image],
-        line_labels: List[str],
+        line_crops: list[Image.Image],
+        line_labels: list[str],
         dataset_len: int,
         inverse_mapping: dict,
-        input_dims: Tuple[int, ...],
-        output_dims: Tuple[int, ...],
+        input_dims: tuple[int, ...],
+        output_dims: tuple[int, ...],
         transform: Callable = None,
     ) -> None:
         super().__init__()
@@ -138,7 +143,7 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
             random.seed(seed)
             self.seed_set = True
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> tuple[Any, Any]:
         """Return a random paragraph, using the first index as a seed."""
         # Since shuffle is True for train dataloaders, the first index will be different on different GPUs
         self._set_seed(index)
@@ -161,7 +166,11 @@ class IAMSyntheticParagraphsDataset(torch.utils.data.Dataset):
             datum = self.transform(datum)
 
         length = self.output_dims[0]
-        target = convert_strings_to_labels(strings=[labels], mapping=self.inverse_mapping, length=length)[0]
+        target = convert_strings_to_labels(
+            strings=[labels],
+            mapping=self.inverse_mapping,
+            length=length,
+        )[0]
 
         return datum, target
 

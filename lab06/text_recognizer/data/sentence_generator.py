@@ -1,8 +1,9 @@
 """SentenceGenerator class and supporting functions."""
+from __future__ import annotations
+
 import itertools
 import re
 import string
-from typing import List, Optional
 
 import nltk
 import numpy as np
@@ -15,12 +16,12 @@ NLTK_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded" / "nltk"
 class SentenceGenerator:
     """Generate text sentences using the Brown corpus."""
 
-    def __init__(self, max_length: Optional[int] = None):
+    def __init__(self, max_length: int | None = None):
         self.text = brown_text()
         self.word_start_inds = [0] + [_.start(0) + 1 for _ in re.finditer(" ", self.text)]
         self.max_length = max_length
 
-    def generate(self, max_length: Optional[int] = None) -> str:
+    def generate(self, max_length: int | None = None) -> str:
         """Sample a string from text of the Brown corpus of length at least one word and at most max_length."""
         if max_length is None:
             max_length = self.max_length
@@ -46,7 +47,7 @@ class SentenceGenerator:
         else:
             raise RuntimeError("Was not able to generate a valid string")
 
-    def _get_end_ind_candidates(self, first_ind: int, start_ind: int, max_length: int) -> List[int]:
+    def _get_end_ind_candidates(self, first_ind: int, start_ind: int, max_length: int) -> list[int]:
         end_ind_candidates = []
         for ind in range(first_ind + 1, len(self.word_start_inds)):
             if self.word_start_inds[ind] - start_ind > max_length:

@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import random
 
 from PIL import Image
 from torchvision import transforms
-
 
 import text_recognizer.metadata.iam_lines as metadata
 from text_recognizer.stems.image import ImageStem
@@ -30,7 +31,7 @@ class LineStem(ImageStem):
                 [
                     transforms.ColorJitter(**color_jitter_kwargs),
                     transforms.RandomAffine(**random_affine_kwargs),
-                ]
+                ],
             )
 
 

@@ -1,4 +1,6 @@
 """Special-purpose metrics for tracking our model performance."""
+from __future__ import annotations
+
 from typing import Sequence
 
 import torch
@@ -14,7 +16,9 @@ class CharacterErrorRate(torchmetrics.CharErrorRate):
 
     def update(self, preds: torch.Tensor, targets: torch.Tensor):  # type: ignore
         preds_l = [[t for t in pred if t not in self.ignore_tokens] for pred in preds.tolist()]
-        targets_l = [[t for t in target if t not in self.ignore_tokens] for target in targets.tolist()]
+        targets_l = [
+            [t for t in target if t not in self.ignore_tokens] for target in targets.tolist()
+        ]
         super().update(preds_l, targets_l)
 
 
@@ -25,14 +29,14 @@ def test_character_error_rate():
             [0, 2, 2, 3, 3, 1],  # error will be 0
             [0, 2, 1, 1, 1, 1],  # error will be .75
             [0, 2, 2, 4, 4, 1],  # error will be .5
-        ]
+        ],
     )
     Y = torch.tensor(
         [
             [0, 2, 2, 3, 3, 1],
             [0, 2, 2, 3, 3, 1],
             [0, 2, 2, 3, 3, 1],
-        ]
+        ],
     )
     metric(X, Y)
     assert metric.compute() == sum([0, 0.75, 0.5]) / 3
