@@ -2,7 +2,7 @@
 #   $ pre-commit autoupdate
 minimum_pre_commit_version: 2.20.0
 default_language_version:
-  python: "python3.10"
+  python: python3.10
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
