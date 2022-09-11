@@ -1,5 +1,7 @@
 """Base Dataset class."""
-from typing import Any, Callable, Dict, Sequence, Tuple, Union
+from __future__ import annotations
+
+from typing import Any, Callable, Sequence, Union
 
 import torch
 from PIL import Image
@@ -43,7 +45,7 @@ class BaseDataset(torch.utils.data.Dataset):
         """Return length of the dataset."""
         return len(self.data)
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> tuple[Any, Any]:
         """
         Return a datum and its target, after processing by transforms.
 
@@ -68,7 +70,7 @@ class BaseDataset(torch.utils.data.Dataset):
 
 def convert_strings_to_labels(
     strings: Sequence[str],
-    mapping: Dict[str, int],
+    mapping: dict[str, int],
     length: int,
 ) -> torch.Tensor:
     """
@@ -88,7 +90,7 @@ def split_dataset(
     base_dataset: BaseDataset,
     fraction: float,
     seed: int,
-) -> Tuple[BaseDataset, BaseDataset]:
+) -> tuple[BaseDataset, BaseDataset]:
     """
     Split input base_dataset into 2 base datasets, the first of size fraction * size of the
     base_dataset and the other of size (1 - fraction) * size of the base_dataset.
