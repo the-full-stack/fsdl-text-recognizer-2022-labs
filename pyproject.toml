@@ -13,7 +13,7 @@ packages = [{ include = "fsdl", from = "fsdl" }]
 [tool.poetry.dependencies]
 python = ">=3.10.4,<3.11"
 # Everything below here is alphabetically sorted
-coverage = { version = "^6.4.4", optional = true } # 6.4  # versioned to give pip hints
+coverage = { version = "^6.4.4", extras = ["toml"] } # 6.4
 gantry = "^0.4.10" # ==0.4.5 versioned for stability
 gradio = "^3.3" # 3.0.21
 h5py = "^3.7.0"
@@ -25,7 +25,7 @@ numpy = "^1.23.3"
 pillow = "^9.2.0" # <7.2
 pyngrok = "^5.1.0"
 requests = "^2.28.1"
-smart-open = { version = "^6.1.0", optional = true }
+smart-open = { version = "^6.1.0", extras = ["s3"] }
 torch = [ # https://download.pytorch.org/whl/torch/
 	# wget https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
 	{ path = "./wheels/torch-1.12.1+cu116-cp310-cp310-linux_x86_64.whl", markers = "sys_platform == 'linux'" },
@@ -88,10 +88,6 @@ tornado = "^6.2"                      # ">=5.1,<5.2"  # versioned to match Googl
 towncrier = "^21.9.0"
 types-toml = "^0.10.8"
 wandb = "^0.12.21"
-
-[tool.poetry.extras]
-coverage = ["toml"]
-smart-open = ["s3"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
