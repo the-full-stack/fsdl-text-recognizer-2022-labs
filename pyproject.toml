@@ -11,23 +11,31 @@ classifiers = ["Private :: Do Not Upload"]
 packages = [{ include = "fsdl", from = "fsdl" }]
 
 [tool.poetry.dependencies]
-python = ">=3.10.6,<3.11"
+python = ">=3.10.4,<3.11"
 # Everything below here is alphabetically sorted
-coverage = { version = "^6.4.4", optional = true }   # 6.4  # versioned to give pip hints
-gantry = "^0.4.10"                                   # ==0.4.5 versioned for stability
-gradio = "^3.3"                                      # 3.0.21
+coverage = { version = "^6.4.4", optional = true } # 6.4  # versioned to give pip hints
+gantry = "^0.4.10" # ==0.4.5 versioned for stability
+gradio = "^3.3" # 3.0.21
 h5py = "^3.7.0"
-importlib-metadata = "^4.12.0"                       # >=4.4
-Jinja2 = "^3.1.2"                                    # >=2.11,<2.12  # versioned to match Google Colab up to minor
+importlib-metadata = "^4.12.0" # >=4.4
+Jinja2 = "^3.1.2" # >=2.11,<2.12  # versioned to match Google Colab up to minor
 loguru = "^0.6.0"
-markupsafe = "^2.1.1"                                # <2.1  # versioned to avoid breaking change in minor version update
+markupsafe = "^2.1.1" # <2.1  # versioned to avoid breaking change in minor version update
 numpy = "^1.23.3"
-pillow = "^9.2.0"                                    # <7.2
+pillow = "^9.2.0" # <7.2
 pyngrok = "^5.1.0"
 requests = "^2.28.1"
 smart-open = { version = "^6.1.0", optional = true }
-torch = "^1.12.1"                                    # >=1.12,<1.13
-torchvision = "^0.13.1"                              # >=0.13
+torch = [ # https://download.pytorch.org/whl/torch/
+	# wget https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
+	{ path = "./wheels/torch-1.12.1+cu116-cp310-cp310-linux_x86_64.whl", markers = "sys_platform == 'linux'" },
+	{ version = "^1.12.1", markers = "sys_platform == 'darwin'" },
+]
+torchvision = [ # https://download.pytorch.org/whl/torchvision/
+	# wget https://download.pytorch.org/whl/cu116/torchvision-0.13.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
+	{ path = "./wheels/torchvision-0.13.1+cu116-cp310-cp310-linux_x86_64.whl", markers = "sys_platform == 'linux'" },
+	{ version = "^0.13.1", markers = "sys_platform == 'darwin'" },
+]
 tqdm = "^4.64.1"
 
 [tool.poetry.dev-dependencies]
