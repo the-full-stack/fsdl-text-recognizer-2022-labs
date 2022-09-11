@@ -74,8 +74,8 @@ def convert_strings_to_labels(
     length: int,
 ) -> torch.Tensor:
     """
-    Convert sequence of N strings to a (N, length) ndarray, with each string wrapped with <S> and <E> tokens,
-    and padded with the <P> token.
+    Convert sequence of N strings to a (N, length) ndarray, with each string wrapped with <S> and
+    <E> tokens, and padded with the <P> token.
     """
     labels = torch.ones((len(strings), length), dtype=torch.long) * mapping["<P>"]
     for i, string in enumerate(strings):
@@ -92,8 +92,8 @@ def split_dataset(
     seed: int,
 ) -> tuple[BaseDataset, BaseDataset]:
     """
-    Split input base_dataset into 2 base datasets, the first of size fraction * size of the base_dataset and the
-    other of size (1 - fraction) * size of the base_dataset.
+    Split input base_dataset into 2 base datasets, the first of size fraction * size of the
+    base_dataset and the other of size (1 - fraction) * size of the base_dataset.
     """
     split_a_size = int(fraction * len(base_dataset))
     split_b_size = len(base_dataset) - split_a_size

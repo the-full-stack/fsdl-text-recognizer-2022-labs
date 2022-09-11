@@ -5,8 +5,8 @@ from typing import Any
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 FC1_DIM = 1024
 FC2_DIM = 128
@@ -14,7 +14,15 @@ FC_DROPOUT = 0.5
 
 
 class MLP(nn.Module):
-    """Simple MLP suitable for recognizing single characters."""
+    """Simple MLP suitable for recognizing single characters.
+
+    Example:
+        data_config = {
+            'input_dims': (784,),
+            'mapping': {0: '0', 1: '1', 2: '2', 3: '3', 4: '4',
+                        5: '5', 6: '6', 7: '7', 8: '8', 9: '9'}
+        }
+    """
 
     def __init__(
         self,
