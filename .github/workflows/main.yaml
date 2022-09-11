@@ -34,6 +34,11 @@ jobs:
           python -m pip install --constraint=.github/workflows/constraints.txt --upgrade pip
           which python
 
+      - name: Install torch wheels
+        run: |
+          wget https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
+          wget https://download.pytorch.org/whl/cu116/torchvision-0.13.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
+
       - name: Set up Poetry cache
         uses: actions/cache@v3.0.8
         with:
@@ -49,8 +54,6 @@ jobs:
           poetry config virtualenvs.path venv
           source venv/bin/activate
           which python
-          wget https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
-          wget https://download.pytorch.org/whl/cu116/torchvision-0.13.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/
           poetry install --no-root
 
       - name: Compute pre-commit cache key
