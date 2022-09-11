@@ -1,6 +1,8 @@
 """Basic convolutional model building blocks."""
+from __future__ import annotations
+
 import argparse
-from typing import Any, Dict
+from typing import Any
 
 import torch
 import torch.nn.functional as F
@@ -42,7 +44,7 @@ class ConvBlock(nn.Module):
 class CNN(nn.Module):
     """Simple CNN for recognizing characters in a square image."""
 
-    def __init__(self, data_config: Dict[str, Any], args: argparse.Namespace = None) -> None:
+    def __init__(self, data_config: dict[str, Any], args: argparse.Namespace = None) -> None:
         super().__init__()
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config

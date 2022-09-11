@@ -1,9 +1,9 @@
-from typing import Union
+from __future__ import annotations
 
 import torch
 
 
-def first_appearance(x: torch.Tensor, element: Union[int, float], dim: int = 1) -> torch.Tensor:
+def first_appearance(x: torch.Tensor, element: int | float, dim: int = 1) -> torch.Tensor:
     """Return indices of first appearance of element in x, collapsing along dim.
 
     Based on https://discuss.pytorch.org/t/first-nonzero-index/24769/9
@@ -46,8 +46,8 @@ def first_appearance(x: torch.Tensor, element: Union[int, float], dim: int = 1) 
 
 def replace_after(
     x: torch.Tensor,
-    element: Union[int, float],
-    replace: Union[int, float],
+    element: int | float,
+    replace: int | float,
 ) -> torch.Tensor:
     """Replace all values in each row of 2d Tensor x after the first appearance of element with replace.
 

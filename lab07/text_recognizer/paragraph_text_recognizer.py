@@ -8,9 +8,11 @@ Example usage as a script:
   python text_recognizer/paragraph_text_recognizer.py \
     https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png
 """
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
-from typing import Sequence, Union
+from typing import Sequence
 
 import torch
 from PIL import Image
@@ -34,7 +36,7 @@ class ParagraphTextRecognizer:
         self.stem = ParagraphStem()
 
     @torch.no_grad()
-    def predict(self, image: Union[str, Path, Image.Image]) -> str:
+    def predict(self, image: str | Path | Image.Image) -> str:
         """Predict/infer text in input image (which can be a file path or url)."""
         image_pil = image
         if not isinstance(image, Image.Image):

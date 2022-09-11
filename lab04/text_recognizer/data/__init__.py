@@ -9,6 +9,8 @@ Most datasets define their constants in a submodule
 of the metadata module that is parallel to this one in the
 hierarchy.
 """
+from __future__ import annotations
+
 from .base_data_module import BaseDataModule
 from .emnist import EMNIST
 from .emnist_lines import EMNISTLines

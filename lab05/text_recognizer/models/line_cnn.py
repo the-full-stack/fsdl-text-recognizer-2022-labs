@@ -1,7 +1,9 @@
 """Basic building blocks for convolutional models over lines of text."""
+from __future__ import annotations
+
 import argparse
 import math
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Tuple, Union
 
 import torch
 import torch.nn.functional as F
@@ -66,7 +68,7 @@ class LineCNN(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
         super().__init__()

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 from text_recognizer.metadata import emnist, shared

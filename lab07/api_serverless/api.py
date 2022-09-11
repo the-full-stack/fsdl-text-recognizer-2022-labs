@@ -1,4 +1,6 @@
 """AWS Lambda function serving text_recognizer predictions."""
+from __future__ import annotations
+
 import json
 
 from PIL import ImageStat

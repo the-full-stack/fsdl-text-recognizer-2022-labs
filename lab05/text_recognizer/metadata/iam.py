@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from text_recognizer.metadata import shared
 
 RAW_DATA_DIRNAME = shared.DATA_DIRNAME / "raw" / "iam"

@@ -1,8 +1,10 @@
 """IAM Paragraphs Dataset class."""
+from __future__ import annotations
+
 import argparse
 import json
 from pathlib import Path
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Sequence
 
 import numpy as np
 from PIL import Image
@@ -120,8 +122,8 @@ class IAMParagraphs(BaseDataModule):
 
 
 def validate_input_and_output_dimensions(
-    input_dims: Optional[Tuple[int, ...]],
-    output_dims: Optional[Tuple[int, ...]],
+    input_dims: tuple[int, ...] | None,
+    output_dims: tuple[int, ...] | None,
 ) -> None:
     """Validate input and output dimensions against the properties of the dataset."""
     properties = get_dataset_properties()
@@ -141,7 +143,7 @@ def get_paragraph_crops_and_labels(
     iam: IAM,
     split: str,
     scale_factor=IMAGE_SCALE_FACTOR,
-) -> Tuple[Dict[str, Image.Image], Dict[str, str]]:
+) -> tuple[dict[str, Image.Image], dict[str, str]]:
     """Create IAM paragraph crops and labels for a given split, with resizing."""
     crops = {}
     labels = {}
@@ -155,7 +157,7 @@ def get_paragraph_crops_and_labels(
     return crops, labels
 
 
-def save_crops_and_labels(crops: Dict[str, Image.Image], labels: Dict[str, str], split: str):
+def save_crops_and_labels(crops: dict[str, Image.Image], labels: dict[str, str], split: str):
     """Save crops, labels and shapes of crops of a split."""
     (PROCESSED_DATA_DIRNAME / split).mkdir(parents=True, exist_ok=True)
 
@@ -166,7 +168,7 @@ def save_crops_and_labels(crops: Dict[str, Image.Image], labels: Dict[str, str],
         crop.save(_crop_filename(id_, split))
 
 
-def load_processed_crops_and_labels(split: str) -> Tuple[Sequence[Image.Image], Sequence[str]]:
+def load_processed_crops_and_labels(split: str) -> tuple[Sequence[Image.Image], Sequence[str]]:
     """Load processed crops and labels for given split."""
     with open(_labels_filename(split), encoding="utf-8") as f:
         labels = json.load(f)

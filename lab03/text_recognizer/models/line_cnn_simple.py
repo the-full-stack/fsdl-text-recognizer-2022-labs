@@ -1,7 +1,9 @@
 """Simplest version of LineCNN that works on cleanly-separated characters."""
+from __future__ import annotations
+
 import argparse
 import math
-from typing import Any, Dict
+from typing import Any
 
 import torch
 from torch import nn
@@ -18,7 +20,7 @@ class LineCNNSimple(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
         super().__init__()

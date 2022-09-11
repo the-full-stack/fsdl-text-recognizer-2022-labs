@@ -1,7 +1,9 @@
 """Model combining a ResNet with a Transformer for image-to-sequence tasks."""
+from __future__ import annotations
+
 import argparse
 import math
-from typing import Any, Dict
+from typing import Any
 
 import torch
 import torchvision
@@ -26,7 +28,7 @@ class ResnetTransformer(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
         super().__init__()

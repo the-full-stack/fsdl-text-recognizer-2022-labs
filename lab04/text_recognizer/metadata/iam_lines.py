@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import text_recognizer.metadata.emnist as emnist
 import text_recognizer.metadata.shared as shared
 

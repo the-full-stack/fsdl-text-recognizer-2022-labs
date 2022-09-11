@@ -1,4 +1,6 @@
 """Provide an image of handwritten text and get back out a string!"""
+from __future__ import annotations
+
 import argparse
 import json
 import logging

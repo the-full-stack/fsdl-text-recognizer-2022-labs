@@ -1,7 +1,9 @@
 """Class for loading the IAM handwritten text dataset, which encompasses both paragraphs and lines, plus utilities."""
+from __future__ import annotations
+
 import zipfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, cast
 
 import toml
 from boltons.cacheutils import cachedproperty
@@ -97,7 +99,7 @@ class IAM:
         return _get_ids_from_lwitlrt_split_file(EXTRACTED_DATASET_DIRNAME / "task/testset.txt")
 
     @property
-    def xml_filenames(self) -> List[Path]:
+    def xml_filenames(self) -> list[Path]:
         """A list of the filenames of all .xml files, which contain label information."""
         return list((EXTRACTED_DATASET_DIRNAME / "xml").glob("*.xml"))
 
@@ -113,7 +115,7 @@ class IAM:
         return val_ids
 
     @property
-    def form_filenames(self) -> List[Path]:
+    def form_filenames(self) -> list[Path]:
         """A list of the filenames of all .jpg files, which contain images of IAM forms."""
         return list((EXTRACTED_DATASET_DIRNAME / "forms").glob("*.jpg"))
 
@@ -172,7 +174,7 @@ def _extract_raw_dataset(filename: Path, dirname: Path) -> None:
             zip_file.extractall()
 
 
-def _get_ids_from_lwitlrt_split_file(filename: str) -> List[str]:
+def _get_ids_from_lwitlrt_split_file(filename: str) -> list[str]:
     """Get the ids from Large Writer Independent Text Line Recognition Task (LWITLRT) data split file."""
     with open(filename) as f:
         line_ids_str = f.read()
@@ -181,7 +183,7 @@ def _get_ids_from_lwitlrt_split_file(filename: str) -> List[str]:
     return page_ids
 
 
-def _get_line_strings_from_xml_file(filename: str) -> List[str]:
+def _get_line_strings_from_xml_file(filename: str) -> list[str]:
     """Get the text content of each line. Note that we replace &quot; with "."""
     xml_line_elements = _get_line_elements_from_xml_file(filename)
     return [_get_text_from_xml_element(el) for el in xml_line_elements]
@@ -192,7 +194,7 @@ def _get_text_from_xml_element(xml_element: Any) -> str:
     return xml_element.attrib["text"].replace("&quot;", '"')
 
 
-def _get_line_regions_from_xml_file(filename: str) -> List[Dict[str, int]]:
+def _get_line_regions_from_xml_file(filename: str) -> list[dict[str, int]]:
     """Get the line region dict for each line."""
     xml_line_elements = _get_line_elements_from_xml_file(filename)
     line_regions = [
@@ -220,13 +222,13 @@ def _get_line_regions_from_xml_file(filename: str) -> List[Dict[str, int]]:
     ]
 
 
-def _get_line_elements_from_xml_file(filename: str) -> List[Any]:
+def _get_line_elements_from_xml_file(filename: str) -> list[Any]:
     """Get all line xml elements from xml file."""
     xml_root_element = ElementTree.parse(filename).getroot()  # nosec
     return xml_root_element.findall("handwritten-part/line")
 
 
-def _get_region_from_xml_element(xml_elem: Any, xml_path: str) -> Optional[Dict[str, int]]:
+def _get_region_from_xml_element(xml_elem: Any, xml_path: str) -> dict[str, int] | None:
     """
     Get region from input xml element. The region is downsampled because the stored images are also downsampled.
 

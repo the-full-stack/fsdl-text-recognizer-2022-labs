@@ -1,4 +1,6 @@
 """IAMParagraphs Stem class."""
+from __future__ import annotations
+
 from torchvision import transforms
 
 import text_recognizer.metadata.iam_paragraphs as metadata
