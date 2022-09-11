@@ -163,9 +163,11 @@ good-names = [
 	"zf",
 ]
 disable = [
+	"locally-disabled",
 	"missing-class-docstring",
 	"missing-function-docstring",
 	"missing-module-docstring",
+	"suppressed-message",
 	"too-few-public-methods",
 	"too-many-ancestors",
 	"too-many-instance-attributes",
