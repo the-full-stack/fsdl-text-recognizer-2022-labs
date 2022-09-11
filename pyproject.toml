@@ -166,9 +166,9 @@ disable = [
 	"missing-class-docstring",
 	"missing-function-docstring",
 	"missing-module-docstring",
-	"too-many-instance-attributes",
-	"too-many-ancestors",
 	"too-few-public-methods",
+	"too-many-ancestors",
+	"too-many-instance-attributes",
 	# TODO: Investigate whether these should be disabled
 	"E1101",
 	"R1732",

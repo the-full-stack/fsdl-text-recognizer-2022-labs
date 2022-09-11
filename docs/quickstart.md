@@ -44,6 +44,7 @@ detect-secrets --verbose scan \
     --exclude-files 'poetry\.lock' \
     --exclude-files '\.secrets\.baseline' \
     --exclude-files '\.env\.template' \
+    --exclude-files '.*\\.ipynb$' \
     --exclude-secrets 'password|ENTER_PASSWORD_HERE|INSERT_API_KEY_HERE' \
     --exclude-lines 'integrity=*sha' \
     > .secrets.baseline

@@ -49,7 +49,7 @@ repos:
     hooks:
       - &flake8
         id: flake8
-        exclude: (lab01|lab02|lab03|lab04|lab06|lab07|lab08)
+        exclude: (lab02|lab03|lab04|lab06|lab07|lab08)
         additional_dependencies:
           - flake8-annotations
           - flake8-bandit
@@ -105,7 +105,7 @@ repos:
             "--exclude-files 'poetry\\.lock'",
             "--exclude-files '\\.secrets\\.baseline'",
             "--exclude-files '\\.env\\.template'",
-            # "--exclude-files '.*\\.ipynb$'",
+            "--exclude-files '.*\\.ipynb$'",
             # "--exclude-files '.*build/'",
             "--exclude-secrets 'password|ENTER_PASSWORD_HERE|INSERT_API_KEY_HERE'",
             "--exclude-lines 'integrity=*sha'",
@@ -143,7 +143,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint lab05
+        entry: pylint lab01 lab05
         # entry: bash -c 'pylint ./path/package1/; pylint ./path/package2/'
         language: system
         types: [python]

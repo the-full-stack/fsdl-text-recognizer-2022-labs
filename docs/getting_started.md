@@ -145,6 +145,7 @@ detect-secrets --verbose scan \
     --exclude-files '\.env\.template' \
     --exclude-secrets 'password|ENTER_PASSWORD_HERE|INSERT_API_KEY_HERE' \
     --exclude-lines 'integrity=*sha' \
+    --exclude-files '.*\\.ipynb$' \
     > .secrets.baseline
 
 # Audit the generated baseline
