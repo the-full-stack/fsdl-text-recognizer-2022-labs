@@ -1,23 +1,23 @@
 """Provide an image of handwritten text and get back out a string!"""
+from __future__ import annotations
+
 import argparse
 import json
 import logging
 import os
+import warnings
 from pathlib import Path
 from typing import Callable
 
-import warnings
-
 import gradio as gr
+import requests
 from PIL import ImageStat
 from PIL.Image import Image
-import requests
 
+import text_recognizer.util as util
 from app_gradio.flagging import GantryImageToTextLogger, get_api_key
 from app_gradio.s3_util import make_unique_bucket_name
-
 from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
-import text_recognizer.util as util
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # do not use GPU
 
@@ -33,7 +33,12 @@ DEFAULT_PORT = 11700
 
 def main(args):
     predictor = PredictorBackend(url=args.model_url)
-    frontend = make_frontend(predictor.run, flagging=args.flagging, gantry=args.gantry, app_name=args.application)
+    frontend = make_frontend(
+        predictor.run,
+        flagging=args.flagging,
+        gantry=args.gantry,
+        app_name=args.application,
+    )
     frontend.launch(
         server_name="0.0.0.0",  # make server accessible, binding all interfaces  # noqa: S104
         server_port=args.port,  # set a port to bind to, failing if unavailable
@@ -43,7 +48,10 @@ def main(args):
 
 
 def make_frontend(
-    fn: Callable[[Image], str], flagging: bool = False, gantry: bool = False, app_name: str = "fsdl-text-recognizer"
+    fn: Callable[[Image], str],
+    flagging: bool = False,
+    gantry: bool = False,
+    app_name: str = "fsdl-text-recognizer",
 ):
     """Creates a gradio.Interface frontend for an image to text function."""
     examples_dir = Path("text_recognizer") / "tests" / "support" / "paragraphs"
@@ -85,7 +93,11 @@ def make_frontend(
         examples=examples,  # which potential inputs should we provide?
         cache_examples=False,  # should we cache those inputs for faster inference? slows down start
         allow_flagging=allow_flagging,  # should we show users the option to "flag" outputs?
-        flagging_options=["incorrect", "offensive", "other"],  # what options do users have for feedback?
+        flagging_options=[
+            "incorrect",
+            "offensive",
+            "other",
+        ],  # what options do users have for feedback?
         flagging_callback=flagging_callback,
         flagging_dir=flagging_dir,
     )

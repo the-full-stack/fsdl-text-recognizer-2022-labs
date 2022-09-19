@@ -2,7 +2,7 @@
 # 📜 Poetry
 ###########
 [tool.poetry]
-name = "fsdl-2022"
+name = "fullstackdeeplearning"
 version = "0.1.0"
 description = "Complete deep learning project developed in Full Stack Deep Learning, 2022 edition."
 authors = ["John Sandall <2884159+john-sandall@users.noreply.github.com>"]
@@ -22,9 +22,11 @@ Jinja2 = "^3.1.2" # >=2.11,<2.12  # versioned to match Google Colab up to minor
 loguru = "^0.6.0"
 markupsafe = "^2.1.1" # <2.1  # versioned to avoid breaking change in minor version update
 numpy = "^1.23.3"
+pandas = "^1.5.0"
 pillow = "^9.2.0" # <7.2
 pyngrok = "^5.1.0"
 requests = "^2.28.1"
+seaborn = "^0.12.0"
 smart-open = { version = "^6.1.0", extras = ["s3"] }
 torch = [ # https://download.pytorch.org/whl/torch/
 	# wget https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp310-cp310-linux_x86_64.whl -P ./wheels/

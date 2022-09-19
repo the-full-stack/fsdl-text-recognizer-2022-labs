@@ -8,9 +8,11 @@ If based on a model that is already converted and uploaded, the model file is do
 For details on how the W&B artifacts backing the checkpoints and models are handled,
 see the documenation for stage_model.find_artifact.
 """
+from __future__ import annotations
+
 import argparse
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import torch
 import wandb
@@ -18,14 +20,15 @@ import wandb
 from text_recognizer.lit_models import TransformerLitModel
 from training.util import setup_data_and_model_from_args
 
-
 # these names are all set by the pl.loggers.WandbLogger
 MODEL_CHECKPOINT_TYPE = "model"
 BEST_CHECKPOINT_ALIAS = "best"
 MODEL_CHECKPOINT_PATH = "model.ckpt"
 LOG_DIR = Path("training") / "logs"
 
-STAGED_MODEL_TYPE = "prod-ready"  # we can choose the name of this type, and ideally it's different from checkpoints
+STAGED_MODEL_TYPE = (
+    "prod-ready"  # we can choose the name of this type, and ideally it's different from checkpoints
+)
 STAGED_MODEL_FILENAME = "model.pt"  # standard nomenclature; pytorch_model.bin is also used
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -56,11 +59,17 @@ def main(args):
 
     # otherwise, we'll need to download the weights, compile the model, and save it
     with wandb.init(
-        job_type="stage", project=args.to_project, dir=LOG_DIR
+        job_type="stage",
+        project=args.to_project,
+        dir=LOG_DIR,
     ):  # log staging to W&B so prod and training are connected
         # find the model checkpoint and retrieve its artifact name and an api handle
         ckpt_at, ckpt_api = find_artifact(
-            entity, args.from_project, type=MODEL_CHECKPOINT_TYPE, alias=args.ckpt_alias, run=args.run
+            entity,
+            args.from_project,
+            type=MODEL_CHECKPOINT_TYPE,
+            alias=args.ckpt_alias,
+            run=args.run,
         )
 
         # get the run that produced that checkpoint
@@ -69,7 +78,11 @@ def main(args):
         metadata = get_checkpoint_metadata(logging_run, ckpt_api)
 
         # create an artifact for the staged, deployable model
-        staged_at = wandb.Artifact(args.staged_model_name, type=STAGED_MODEL_TYPE, metadata=metadata)
+        staged_at = wandb.Artifact(
+            args.staged_model_name,
+            type=STAGED_MODEL_TYPE,
+            metadata=metadata,
+        )
         with tempfile.TemporaryDirectory() as tmp_dir:
             # download the checkpoint to a temporary directory
             download_artifact(ckpt_at, tmp_dir)
@@ -123,7 +136,9 @@ def print_info(artifact, run=None):
 
     full_artifact_name = f"{artifact.entity}/{artifact.project}/{artifact.name}"
     print(f"Using artifact {full_artifact_name}")
-    artifact_url_prefix = f"https://wandb.ai/{artifact.entity}/{artifact.project}/artifacts/{artifact.type}"
+    artifact_url_prefix = (
+        f"https://wandb.ai/{artifact.entity}/{artifact.project}/artifacts/{artifact.type}"
+    )
     artifact_url_suffix = f"{artifact.name.replace(':', '/')}"
     print(f"View at URL: {artifact_url_prefix}/{artifact_url_suffix}")
 
@@ -164,7 +179,12 @@ def load_model_from_checkpoint(ckpt_metadata, directory):
 
     # load LightningModule from checkpoint
     pth = Path(directory) / MODEL_CHECKPOINT_PATH
-    lit_model = LITMODEL_CLASS.load_from_checkpoint(checkpoint_path=pth, args=args, model=model, strict=False)
+    lit_model = LITMODEL_CLASS.load_from_checkpoint(
+        checkpoint_path=pth,
+        args=args,
+        model=model,
+        strict=False,
+    )
     lit_model.eval()
 
     return lit_model
@@ -189,7 +209,9 @@ def _find_artifact_run(entity, project, type, run, alias):
     if not match:
         raise ValueError(f"No artifact with alias {alias} found at {run_name} of type {type}")
     if len(match) > 1:
-        raise ValueError(f"Multiple artifacts ({len(match)}) with alias {alias} found at {run_name} of type {type}")
+        raise ValueError(
+            f"Multiple artifacts ({len(match)}) with alias {alias} found at {run_name} of type {type}",
+        )
     return f"{entity}/{project}/{match[0].name}"
 
 
@@ -209,13 +231,17 @@ def _find_artifact_project(entity, project, type, alias):
                 if alias in version.aliases:  # looking for the first one that matches the alias
                     return f"{project_name}/{version.name}"
         raise ValueError(f"Artifact with alias {alias} not found in type {type} in {project_name}")
-    raise ValueError(f"Artifact type {type} not found. {project_name} could be private or not exist.")
+    raise ValueError(
+        f"Artifact type {type} not found. {project_name} could be private or not exist.",
+    )
 
 
 def _get_entity_from(args):
     entity = args.entity
     if entity is None:
-        raise RuntimeError(f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}.")
+        raise RuntimeError(
+            f"No entity argument provided. Use --entity=DEFAULT to use {DEFAULT_ENTITY}.",
+        )
     elif entity == "DEFAULT":
         entity = DEFAULT_ENTITY
 

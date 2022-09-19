@@ -117,11 +117,11 @@ repos:
               \.secrets\.baseline|
               \.env\.template
           )$
-  - repo: https://github.com/python-poetry/poetry
-    rev: 1.2.0
-    hooks:
-      - id: poetry-check
-  #    - id: poetry-lock
+  # - repo: https://github.com/python-poetry/poetry
+  #   rev: 1.2.1
+  #   hooks:
+  #     - id: poetry-check
+  #     - id: poetry-lock
   #       args: ["--no-update"]
   #     - id: poetry-export
   #       args:
@@ -157,11 +157,11 @@ repos:
         always_run: true
         pass_filenames: false
         stages: [manual]
-      # TODO: Remove once new Poetry version out after 1.2.0
-      # https://github.com/python-poetry/poetry/issues/6327
+      # TODO: Remove once this is resolved
+      # https://github.com/python-poetry/poetry/issues/2765
       - id: poetry-lock
         name: poetry-lock
-        entry: bash -c 'rm poetry.lock && poetry lock --no-update'
+        entry: bash -c 'poetry lock && python add_markers.py'
         language: system
         always_run: true
         pass_filenames: false

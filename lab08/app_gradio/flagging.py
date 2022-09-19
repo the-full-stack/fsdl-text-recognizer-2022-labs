@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import os
-from typing import List, Optional, Union
 
 import gantry
 import gradio as gr
@@ -13,7 +14,12 @@ from text_recognizer.util import read_b64_string
 class GantryImageToTextLogger(gr.FlaggingCallback):
     """A FlaggingCallback that logs flagged image-to-text data to Gantry via S3."""
 
-    def __init__(self, application: str, version: Union[int, str, None] = None, api_key: Optional[str] = None):
+    def __init__(
+        self,
+        application: str,
+        version: int | str | None = None,
+        api_key: str | None = None,
+    ):
         """Logs image-to-text data that was flagged in Gradio to Gantry.
 
         Images are logged to Amazon Web Services' Simple Storage Service (S3).
@@ -47,13 +53,15 @@ class GantryImageToTextLogger(gr.FlaggingCallback):
         self.version = version
         gantry.init(api_key=api_key)
 
-    def setup(self, components: List[Component], flagging_dir: str):
+    def setup(self, components: list[Component], flagging_dir: str):
         """Sets up the GantryImageToTextLogger by creating or attaching to an S3 Bucket."""
         self._counter = 0
         self.bucket = s3_util.get_or_create_bucket(flagging_dir)
         s3_util.enable_bucket_versioning(self.bucket)
         s3_util.add_access_policy(self.bucket)
-        self.image_component_idx, self.text_component_idx = self._find_image_and_text_components(components)
+        self.image_component_idx, self.text_component_idx = self._find_image_and_text_components(
+            components,
+        )
 
     def flag(self, flag_data, flag_option=None, flag_index=None, username=None) -> int:
         """Sends flagged outputs and feedback to Gantry and image inputs to S3."""
@@ -75,7 +83,13 @@ class GantryImageToTextLogger(gr.FlaggingCallback):
         inputs = {"image": input_image_url}
         outputs = {"output_text": output_text}
 
-        gantry.log_record(self.application, self.version, inputs=inputs, outputs=outputs, feedback=feedback)
+        gantry.log_record(
+            self.application,
+            self.version,
+            inputs=inputs,
+            outputs=outputs,
+            feedback=feedback,
+        )
 
     def _to_s3(self, image_bytes, key=None, filetype=None):
         if key is None:
@@ -88,7 +102,7 @@ class GantryImageToTextLogger(gr.FlaggingCallback):
 
         return s3_uri
 
-    def _find_image_and_text_components(self, components: List[Component]):
+    def _find_image_and_text_components(self, components: list[Component]):
         image_component_idx, text_component_idx = None, None
 
         for idx, component in enumerate(components):
@@ -97,14 +111,18 @@ class GantryImageToTextLogger(gr.FlaggingCallback):
             elif isinstance(component, (gr.templates.Text, gr.components.Textbox)):
                 text_component_idx = idx
         if image_component_idx is None:
-            raise RuntimeError(f"No image input found in gradio interface with components {components}")
+            raise RuntimeError(
+                f"No image input found in gradio interface with components {components}",
+            )
         elif text_component_idx is None:
-            raise RuntimeError(f"No text output found in gradio interface with components {components}")
+            raise RuntimeError(
+                f"No text output found in gradio interface with components {components}",
+            )
 
         return image_component_idx, text_component_idx
 
 
-def get_api_key() -> Optional[str]:
+def get_api_key() -> str | None:
     """Convenience method for fetching the Gantry API key."""
     api_key = os.environ.get("GANTRY_API_KEY")
     return api_key

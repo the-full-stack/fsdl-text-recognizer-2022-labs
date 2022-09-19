@@ -1,4 +1,6 @@
 """Metadata for the MNIST dataset."""
+from __future__ import annotations
+
 import text_recognizer.metadata.shared as shared
 
 DOWNLOADED_DATA_DIRNAME = shared.DOWNLOADED_DATA_DIRNAME

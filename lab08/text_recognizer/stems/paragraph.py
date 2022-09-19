@@ -1,9 +1,10 @@
 """IAMParagraphs Stem class."""
+from __future__ import annotations
+
 import torchvision.transforms as transforms
 
 import text_recognizer.metadata.iam_paragraphs as metadata
 from text_recognizer.stems.image import ImageStem
-
 
 IMAGE_HEIGHT, IMAGE_WIDTH = metadata.IMAGE_HEIGHT, metadata.IMAGE_WIDTH
 IMAGE_SHAPE = metadata.IMAGE_SHAPE
@@ -53,11 +54,15 @@ class ParagraphStem(ImageStem):
                 [
                     transforms.ColorJitter(**color_jitter_kwargs),
                     transforms.RandomCrop(
-                        size=IMAGE_SHAPE, padding=None, pad_if_needed=True, fill=0, padding_mode="constant"
+                        size=IMAGE_SHAPE,
+                        padding=None,
+                        pad_if_needed=True,
+                        fill=0,
+                        padding_mode="constant",
                     ),
                     transforms.RandomAffine(**random_affine_kwargs),
                     transforms.RandomPerspective(**random_perspective_kwargs),
                     transforms.GaussianBlur(**gaussian_blur_kwargs),
                     transforms.RandomAdjustSharpness(**sharpness_kwargs),
-                ]
+                ],
             )

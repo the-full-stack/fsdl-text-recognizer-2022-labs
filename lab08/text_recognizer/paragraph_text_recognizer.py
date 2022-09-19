@@ -8,16 +8,17 @@ Example usage as a script:
   python text_recognizer/paragraph_text_recognizer.py \
     https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png
 """
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
-from typing import Sequence, Union
+from typing import Sequence
 
-from PIL import Image
 import torch
+from PIL import Image
 
 from text_recognizer import util
 from text_recognizer.stems.paragraph import ParagraphStem
-
 
 STAGED_MODEL_DIRNAME = Path(__file__).resolve().parent / "artifacts" / "paragraph-text-recognizer"
 MODEL_FILE = "model.pt"
@@ -35,7 +36,7 @@ class ParagraphTextRecognizer:
         self.stem = ParagraphStem()
 
     @torch.no_grad()
-    def predict(self, image: Union[str, Path, Image.Image]) -> str:
+    def predict(self, image: str | Path | Image.Image) -> str:
         """Predict/infer text in input image (which can be a file path or url)."""
         image_pil = image
         if not isinstance(image, Image.Image):
@@ -43,12 +44,20 @@ class ParagraphTextRecognizer:
 
         image_tensor = self.stem(image_pil).unsqueeze(axis=0)
         y_pred = self.model(image_tensor)[0]
-        pred_str = convert_y_label_to_string(y=y_pred, mapping=self.mapping, ignore_tokens=self.ignore_tokens)
+        pred_str = convert_y_label_to_string(
+            y=y_pred,
+            mapping=self.mapping,
+            ignore_tokens=self.ignore_tokens,
+        )
 
         return pred_str
 
 
-def convert_y_label_to_string(y: torch.Tensor, mapping: Sequence[str], ignore_tokens: Sequence[int]) -> str:
+def convert_y_label_to_string(
+    y: torch.Tensor,
+    mapping: Sequence[str],
+    ignore_tokens: Sequence[int],
+) -> str:
     return "".join([mapping[i] for i in y if i not in ignore_tokens])
 
 

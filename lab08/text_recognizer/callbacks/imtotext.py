@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytorch_lightning as pl
 from pytorch_lightning.utilities import rank_zero_only
 

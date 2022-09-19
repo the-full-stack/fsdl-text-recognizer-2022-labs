@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import hashlib
 import json
 
@@ -16,7 +18,9 @@ def get_or_create_bucket(name):
         name, response = _create_bucket(name)
     except botocore.exceptions.ClientError as err:
         # error handling from https://github.com/boto/boto3/issues/1195#issuecomment-495842252
-        status = err.response["ResponseMetadata"]["HTTPStatusCode"]  # status codes identify particular errors
+        status = err.response["ResponseMetadata"][
+            "HTTPStatusCode"
+        ]  # status codes identify particular errors
 
         if status == 409:  # if the bucket exists already,
             pass  # we don't need to make it -- we presume we have the right permissions
@@ -103,7 +107,7 @@ def _get_policy(bucket_name):
                         "arn:aws:iam::848836713690:root",
                         "arn:aws:iam::339325199688:root",
                         "arn:aws:iam::665957668247:root",
-                    ]
+                    ],
                 },
                 "Action": ["s3:GetObject", "s3:GetObjectVersion"],
                 "Resource": f"arn:aws:s3:::{bucket_name}/*",
@@ -115,7 +119,7 @@ def _get_policy(bucket_name):
                         "arn:aws:iam::848836713690:root",
                         "arn:aws:iam::339325199688:root",
                         "arn:aws:iam::665957668247:root",
-                    ]
+                    ],
                 },
                 "Action": "s3:ListBucketVersions",
                 "Resource": f"arn:aws:s3:::{bucket_name}",

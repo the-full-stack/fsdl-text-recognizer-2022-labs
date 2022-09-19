@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import text_recognizer.metadata.iam_paragraphs as iam_paragraphs
 import text_recognizer.metadata.shared as shared
 

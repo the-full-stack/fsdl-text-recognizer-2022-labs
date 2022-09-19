@@ -1,14 +1,15 @@
 """Model that combines a LineCNN with a Transformer model for text prediction."""
+from __future__ import annotations
+
 import argparse
 import math
-from typing import Any, Dict
+from typing import Any
 
 import torch
 from torch import nn
 
 from .line_cnn import LineCNN
-from .transformer_util import generate_square_subsequent_mask, PositionalEncoding
-
+from .transformer_util import PositionalEncoding, generate_square_subsequent_mask
 
 TF_DIM = 256
 TF_FC_DIM = 256
@@ -22,7 +23,7 @@ class LineCNNTransformer(nn.Module):
 
     def __init__(
         self,
-        data_config: Dict[str, Any],
+        data_config: dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
         super().__init__()
@@ -56,7 +57,12 @@ class LineCNNTransformer(nn.Module):
         self.y_mask = generate_square_subsequent_mask(self.max_output_length)
 
         self.transformer_decoder = nn.TransformerDecoder(
-            nn.TransformerDecoderLayer(d_model=self.dim, nhead=tf_nhead, dim_feedforward=tf_fc_dim, dropout=tf_dropout),
+            nn.TransformerDecoderLayer(
+                d_model=self.dim,
+                nhead=tf_nhead,
+                dim_feedforward=tf_fc_dim,
+                dropout=tf_dropout,
+            ),
             num_layers=tf_layers,
         )
 
@@ -109,7 +115,10 @@ class LineCNNTransformer(nn.Module):
         Sy = y.shape[0]
         y_mask = self.y_mask[:Sy, :Sy].type_as(x)
         output = self.transformer_decoder(
-            tgt=y, memory=x, tgt_mask=y_mask, tgt_key_padding_mask=y_padding_mask
+            tgt=y,
+            memory=x,
+            tgt_mask=y_mask,
+            tgt_key_padding_mask=y_padding_mask,
         )  # (Sy, B, E)
         output = self.fc(output)  # (Sy, B, C)
         return output
@@ -141,7 +150,9 @@ class LineCNNTransformer(nn.Module):
 
         # Set all tokens after end token to be padding
         for Sy in range(1, S):
-            ind = (output_tokens[:, Sy - 1] == self.end_token) | (output_tokens[:, Sy - 1] == self.padding_token)
+            ind = (output_tokens[:, Sy - 1] == self.end_token) | (
+                output_tokens[:, Sy - 1] == self.padding_token
+            )
             output_tokens[ind, Sy] = self.padding_token
 
         return output_tokens  # (B, Sy)
