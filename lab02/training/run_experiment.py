@@ -139,11 +139,12 @@ def main():
 
     trainer.fit(lit_model, datamodule=data)
 
-    trainer.test(lit_model, datamodule=data)
-
     best_model_path = checkpoint_callback.best_model_path
     if best_model_path:
         rank_zero_info(f"Best model saved at: {best_model_path}")
+        trainer.test(datamodule=data, ckpt_path=best_model_path)
+    else:
+        trainer.test(lit_model, datamodule=data)
 
 
 if __name__ == "__main__":
