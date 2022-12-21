@@ -1,6 +1,6 @@
 # Starting from an official AWS image
 # Keep any dependencies and versions in this file aligned with the environment.yml and Makefile
-FROM public.ecr.aws/lambda/python:3.7
+FROM public.ecr.aws/lambda/python:3.8
 
 # Install Python dependencies
 COPY requirements/prod.txt ./requirements.txt

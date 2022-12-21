@@ -121,7 +121,7 @@ Conda is an open-source package management system and environment management sys
 It is most closely associated with Python, but
 [in fact it can manage more than just Python environments](https://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/).
 
-To install `conda`, follow instructions at https://conda.io/projects/conda/en/latest/user-guide/install/linux.html. We use Python 3.7.
+To install `conda`, follow instructions at https://conda.io/projects/conda/en/latest/user-guide/install/linux.html. We use Python 3.8.
 
 Note that you will likely need to close and re-open your terminal.
 Afterwards, you should have ability to run the `conda` command in your terminal.

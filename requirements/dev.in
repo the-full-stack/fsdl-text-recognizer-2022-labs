@@ -18,7 +18,7 @@ pytest==7.1.1
 pytest-cov==3.0.0
 # versioned to match Google Colab
 seaborn>=0.11,<0.12
-tornado>=5.1,<5.2
+tornado>=6.0,<6.1
 # versioned to improve stability
 pytorch-lightning==1.6.3
 torchmetrics<0.8

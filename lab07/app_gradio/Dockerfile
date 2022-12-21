@@ -1,6 +1,6 @@
 # The "buster" flavor of the official docker Python image is based on Debian and includes common packages.
 # Keep any dependencies and versions in this file aligned with the environment.yml and Makefile
-FROM python:3.7-buster
+FROM python:3.8-buster
 
 # Create the working directory
 #   set -x prints commands and set -e causes us to stop on errors
