@@ -257,13 +257,13 @@ def _setup_parser():
         "--ckpt_alias",
         type=str,
         default=BEST_CHECKPOINT_ALIAS,
-        help=f"Alias that identifies which model checkpoint should be staged.The artifact's alias can be set manually or programmatically elsewhere. Default is '{BEST_CHECKPOINT_ALIAS}'.",
+        help=f"Alias that identifies which model checkpoint should be staged.The artifact's alias can be set manually or programmatically elsewhere. Default is {BEST_CHECKPOINT_ALIAS!r}.",
     )
     parser.add_argument(
         "--staged_model_name",
         type=str,
         default=DEFAULT_STAGED_MODEL_NAME,
-        help=f"Name to give the staged model artifact. Default is '{DEFAULT_STAGED_MODEL_NAME}'.",
+        help=f"Name to give the staged model artifact. Default is {DEFAULT_STAGED_MODEL_NAME!r}.",
     )
     return parser
 
