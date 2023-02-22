@@ -4,7 +4,7 @@ FROM public.ecr.aws/lambda/python:3.8
 
 # Install Python dependencies
 COPY requirements/prod.txt ./requirements.txt
-RUN pip install --upgrade pip==21.1.3
+RUN pip install --upgrade pip==22.0.4
 RUN pip install -r requirements.txt
 
 # Copy only the relevant directories and files

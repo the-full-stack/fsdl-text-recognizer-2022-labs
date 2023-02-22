@@ -20,7 +20,7 @@ attrs==22.1.0
     # via aiohttp
 backoff==1.10.0
     # via analytics-python
-backports.zoneinfo==0.2.1
+backports-zoneinfo==0.2.1
     # via
     #   pytz-deprecation-shim
     #   tzlocal
