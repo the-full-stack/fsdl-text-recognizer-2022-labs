@@ -29,7 +29,7 @@ repos:
       - id: flake8
         exclude: (lab01|lab02|lab03|lab04|lab06|lab07|lab08)
         additional_dependencies: [
-          flake8-annotations, flake8-bandit, flake8-bugbear, flake8-black, flake8-docstrings,
+          flake8-bandit, flake8-bugbear, flake8-docstrings,
           flake8-import-order, darglint, mypy, pycodestyle, pydocstyle]
         args: ["--config", ".flake8"]
     # additional configuration of flake8 and extensions in .flake8

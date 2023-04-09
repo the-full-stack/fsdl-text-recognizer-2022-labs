@@ -19,6 +19,7 @@ class MLP(nn.Module):
         data_config: Dict[str, Any],
         args: argparse.Namespace = None,
     ) -> None:
+
         super().__init__()
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config

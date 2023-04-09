@@ -9,7 +9,7 @@ extend-ignore =
   # E W - flake8 PEP style check
     E203,E402,E501,W503,  # whitespace, import, line length, binary operator line breaks
   # S - flake8-bandit safety check
-    S101,S311,S105,  # assert removed in bytecode, pRNG not secure, hardcoded password
+    S101,S113,S311,S105,  # assert removed in bytecode, no request timeout, pRNG not secure, hardcoded password
   # ANN - flake8-annotations type annotation check
     ANN,ANN002,ANN003,ANN101,ANN102,ANN202,  # ignore all for now, but always ignore some
   # D1 - flake8-docstrings docstring style check

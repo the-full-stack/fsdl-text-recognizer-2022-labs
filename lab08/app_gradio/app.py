@@ -64,7 +64,7 @@ def make_frontend(
             flagging_dir = make_unique_bucket_name(prefix=app_name, seed=api_key)
         else:  # otherwise, log to a local CSV file
             if gantry and api_key is None:
-                warnings.warn("No Gantry API key found, logging to local directory instead.")
+                warnings.warn("No Gantry API key found, logging to local directory instead.", stacklevel=1)
             flagging_callback = gr.CSVLogger()
             flagging_dir = "flagged"
     else:

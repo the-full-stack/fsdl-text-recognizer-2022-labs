@@ -4,10 +4,8 @@ bandit
 black
 darglint
 flake8<4
-flake8-annotations
 flake8-bandit
 flake8-bugbear
-flake8-black
 flake8-docstrings
 flake8-import-order
 mypy==0.960

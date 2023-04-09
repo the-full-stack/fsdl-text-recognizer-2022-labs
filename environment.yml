@@ -1,9 +1,10 @@
 name: fsdl-text-recognizer-2022
 channels:
   - defaults
+  - pytorch
+  - nvidia
   - conda-forge
 dependencies:
-  - python=3.8  # versioned to match Google Colab  # version also pinned in Dockerfile
-  - cudatoolkit=11.6
-  - cudnn=8.3.2
+  - python=3.9  # versioned to match Google Colab  # version also pinned in Dockerfile
+  - pytorch-cuda=11.8  # versioned to match Google Colab
   - pip=22.0.4  # versioned to match Google Colab  # version also pinned in Dockerfile
