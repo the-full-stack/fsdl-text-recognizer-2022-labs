@@ -1,6 +1,6 @@
 # The "buster" flavor of the official docker Python image is based on Debian and includes common packages.
 # Keep any dependencies and versions in this file aligned with the environment.yml and Makefile
-FROM python:3.9-buster
+FROM python:3.10-buster
 
 # Create the working directory
 #   set -x prints commands and set -e causes us to stop on errors
@@ -9,7 +9,7 @@ WORKDIR /repo
 
 # Install Python dependencies
 COPY requirements/prod.txt ./requirements.txt
-RUN pip install --upgrade pip==22.0.4
+RUN pip install --upgrade pip==23.1.2
 RUN pip install -r requirements.txt
 ENV PYTHONPATH ".:"
 
