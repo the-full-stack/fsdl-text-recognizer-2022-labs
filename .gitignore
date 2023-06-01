@@ -61,3 +61,4 @@ lab9/requirements.txt
 requirements/dev-lint.txt
 bootstrap.py
 **/fixme.py
+.server.env
